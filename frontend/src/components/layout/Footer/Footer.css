@@ -1,0 +1,35 @@
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 30px 7%;
+  color: #fff;
+  background: #0d1523;
+  border-top: 1px solid rgba(215, 166, 66, 0.16);
+}
+
+[data-theme='dark'] .footer {
+  background: #060a11;
+}
+
+.footer > div {
+  display: grid;
+  gap: 3px;
+}
+
+.footer small {
+  color: #aeb8c7;
+}
+
+.footer-mark {
+  color: var(--color-gold-light);
+}
+
+@media (max-width: 600px) {
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

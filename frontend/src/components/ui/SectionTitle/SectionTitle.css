@@ -1,0 +1,22 @@
+.section-title {
+  margin-bottom: 28px;
+}
+
+.section-title h2 {
+  font-size: clamp(32px, 3vw, 44px);
+  margin-bottom: 14px;
+}
+
+.section-title p {
+  max-width: 850px;
+  color: var(--color-text-soft);
+  line-height: 1.8;
+}
+
+.section-title-centered {
+  text-align: center;
+}
+
+.section-title-centered p {
+  margin: 0 auto 18px;
+}

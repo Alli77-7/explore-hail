@@ -1,0 +1,62 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 15px 24px;
+  border: 0;
+  border-radius: 15px;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.25s, box-shadow 0.25s, background 0.25s, border-color 0.25s;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+}
+
+.btn-sm {
+  padding: 11px 15px;
+  font-size: 13px;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+/* ذهبي — الزر الأساسي */
+.btn-primary {
+  color: #1e160b;
+  background: var(--gradient-gold);
+  box-shadow: var(--shadow-gold);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 18px 36px rgba(169, 106, 33, 0.35), 0 0 32px rgba(215, 166, 66, 0.25);
+}
+
+/* زجاجي — فوق صورة الواجهة */
+.btn-glass {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(10px);
+}
+
+/* بنفسجي — ميزة الترجمة الذكية */
+.btn-secondary {
+  color: #fff;
+  background: linear-gradient(135deg, #7c3aed, #4c1d95);
+}
+
+/* شفاف بإطار */
+.btn-ghost {
+  color: var(--color-text);
+  background: transparent;
+  border: 1px solid var(--color-line);
+}
+
+.btn-ghost:hover {
+  border-color: var(--color-gold);
+}

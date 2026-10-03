@@ -1,0 +1,171 @@
+/* ===== Toolbar (search + filters) ===== */
+.attractions-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.search-box {
+  display: flex;
+  flex: 1 1 280px;
+  align-items: center;
+  gap: 10px;
+  max-width: 380px;
+  height: 48px;
+  padding: 0 16px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  background: var(--color-card);
+  box-shadow: var(--shadow-card);
+  transition: 0.2s;
+}
+
+.search-box:focus-within {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 4px rgba(215, 166, 66, 0.15);
+}
+
+.search-box span {
+  color: var(--color-gold-deep);
+  font-size: 20px;
+}
+
+.search-box input {
+  flex: 1;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+}
+
+.attractions-empty {
+  padding: 40px 0;
+  color: var(--color-text-soft);
+  font-weight: 700;
+  text-align: center;
+}
+
+/* ===== Grid & card ===== */
+.attractions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.attraction-card-image {
+  position: relative;
+  overflow: hidden;
+}
+
+.attraction-card-image img {
+  width: 100%;
+  height: 245px;
+  object-fit: cover;
+  filter: saturate(1.08) contrast(1.04);
+  transition: transform 0.45s;
+}
+
+.attraction-card:hover .attraction-card-image img {
+  transform: scale(1.05);
+}
+
+.attraction-card-body {
+  padding: 23px;
+}
+
+.attraction-card-body h3 {
+  margin-bottom: 7px;
+  font-size: 20px;
+}
+
+.attraction-card-body > p {
+  margin: 10px 0 15px;
+  color: var(--color-text-soft);
+  line-height: 1.7;
+}
+
+.attraction-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 12px 0 16px;
+  color: var(--color-text-soft);
+  font-size: 13px;
+}
+
+/* ===== Details modal content ===== */
+.details-media {
+  position: relative;
+}
+
+.details-media img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+}
+
+.details-body {
+  padding: 26px 28px 30px;
+}
+
+.details-body h2 {
+  font-size: 28px;
+}
+
+.details-body > p {
+  margin: 12px 0 20px;
+}
+
+.details-facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 22px;
+  list-style: none;
+}
+
+.details-facts li {
+  padding: 14px;
+  border: 1px solid var(--color-line);
+  border-radius: 16px;
+  background: rgba(215, 166, 66, 0.08);
+}
+
+.details-facts small {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--color-text-soft);
+  font-size: 12px;
+}
+
+.details-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .attractions-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .attractions-grid,
+  .details-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .search-box {
+    max-width: none;
+  }
+
+  .details-media img {
+    height: 230px;
+  }
+}
