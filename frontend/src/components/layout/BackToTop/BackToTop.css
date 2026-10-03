@@ -6,12 +6,12 @@
   width: 48px;
   height: 48px;
   border: 0;
-  border-radius: 16px;
-  color: #1e160b;
+  border-radius: var(--radius-sm);
+  color: var(--color-on-gold);
   background: var(--gradient-gold);
   font-size: 20px;
   font-weight: 900;
-  box-shadow: 0 14px 30px rgba(169, 106, 33, 0.3);
+  box-shadow: var(--shadow-gold);
   cursor: pointer;
   opacity: 0;
   pointer-events: none;

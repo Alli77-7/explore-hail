@@ -131,7 +131,7 @@
 .details-facts li {
   padding: 14px;
   border: 1px solid var(--color-line);
-  border-radius: 16px;
+  border-radius: var(--radius-sm);
   background: rgba(215, 166, 66, 0.08);
 }
 

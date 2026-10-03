@@ -58,6 +58,6 @@
 
   .modal-card {
     max-height: 92vh;
-    border-radius: 26px 26px 0 0;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   }
 }

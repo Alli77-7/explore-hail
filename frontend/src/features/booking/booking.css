@@ -45,7 +45,7 @@
   width: 130px;
   height: 118px;
   object-fit: cover;
-  border-radius: 18px;
+  border-radius: var(--radius-sm);
 }
 
 .service-card h3 {
@@ -88,7 +88,7 @@
 .selected-service-box {
   padding: 14px 16px;
   border: 1px solid rgba(215, 166, 66, 0.18);
-  border-radius: 16px;
+  border-radius: var(--radius-sm);
   background: rgba(215, 166, 66, 0.09);
 }
 

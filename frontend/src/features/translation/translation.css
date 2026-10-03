@@ -15,7 +15,7 @@
   position: absolute;
   top: 18px;
   inset-inline-end: 18px;
-  color: #a57831;
+  color: var(--color-gold-deep);
   font-size: 13px;
   font-weight: 900;
 }
@@ -26,8 +26,8 @@
   width: 50px;
   height: 50px;
   margin-bottom: 14px;
-  border-radius: 16px;
-  color: #152033;
+  border-radius: var(--radius-sm);
+  color: var(--color-on-gold);
   background: var(--gradient-gold);
   font-size: 18px;
   font-weight: 900;
@@ -70,7 +70,7 @@
 }
 
 .upload-box.dragging {
-  border-color: var(--color-purple);
+  border-color: var(--color-lavender);
   background: rgba(109, 40, 217, 0.05);
 }
 
@@ -88,9 +88,9 @@
   width: 80px;
   height: 80px;
   margin-bottom: 18px;
-  border-radius: 24px;
+  border-radius: var(--radius-md);
   color: #fff;
-  background: linear-gradient(135deg, #2d1b50, #7c3aed);
+  background: linear-gradient(135deg, var(--color-lavender-night), var(--color-lavender));
   font-size: 34px;
   box-shadow: 0 18px 35px rgba(109, 40, 217, 0.22);
 }
@@ -109,8 +109,8 @@
 .upload-btn {
   margin-top: 18px;
   padding: 13px 23px;
-  border-radius: 15px;
-  color: #1e160b;
+  border-radius: var(--radius-xs);
+  color: var(--color-on-gold);
   background: var(--gradient-gold);
   font-weight: 800;
   box-shadow: var(--shadow-gold);
@@ -121,8 +121,8 @@
   height: 175px;
   margin-top: 20px;
   object-fit: cover;
-  border: 1px solid rgba(109, 40, 217, 0.14);
-  border-radius: 18px;
+  border: 1px solid var(--color-lavender-line);
+  border-radius: var(--radius-sm);
   opacity: 0.9;
 }
 
@@ -130,7 +130,7 @@
   position: relative;
   overflow: hidden;
   padding: 30px;
-  border: 1px solid rgba(109, 40, 217, 0.14);
+  border: 1px solid var(--color-lavender-line);
   border-radius: var(--radius-lg);
   background:
     radial-gradient(circle at top right, rgba(109, 40, 217, 0.1), transparent 38%),
@@ -164,7 +164,7 @@
   padding: 9px 14px;
   border-radius: var(--radius-pill);
   color: #fff;
-  background: linear-gradient(135deg, #7c3aed, #4c1d95);
+  background: var(--gradient-lavender);
   font-size: 12px;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -174,7 +174,7 @@
   padding: 8px 12px;
   border-radius: var(--radius-pill);
   color: #fff;
-  background: #111827;
+  background: var(--color-dark);
 }
 
 .result-header b.analyzing {
@@ -197,20 +197,20 @@
 .result-box {
   margin: 12px 0;
   padding: 15px;
-  border: 1px solid rgba(109, 40, 217, 0.12);
-  border-radius: 17px;
+  border: 1px solid var(--color-lavender-line);
+  border-radius: var(--radius-sm);
   background: var(--color-muted);
 }
 
 .result-box small {
   display: block;
   margin-bottom: 5px;
-  color: var(--color-purple);
+  color: var(--color-lavender);
   font-weight: 900;
 }
 
 [data-theme='dark'] .result-box small {
-  color: #a78bfa;
+  color: var(--color-lavender-light);
 }
 
 .result-box p {

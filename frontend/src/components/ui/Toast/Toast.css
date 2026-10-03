@@ -5,7 +5,7 @@
   z-index: 2100;
   max-width: calc(100% - 32px);
   padding: 14px 22px;
-  border-radius: 16px;
+  border-radius: var(--radius-sm);
   color: #fff;
   background: var(--color-green);
   font-weight: 800;

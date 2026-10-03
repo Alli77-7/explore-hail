@@ -63,7 +63,7 @@
   padding: 10px 18px;
   border: 1px solid rgba(242, 199, 109, 0.5);
   border-radius: var(--radius-pill);
-  color: #fff0c9;
+  color: var(--color-gold-soft);
   background: rgba(255, 255, 255, 0.07);
   font-size: 13px;
   font-weight: 800;
@@ -87,7 +87,7 @@
 .hero p {
   max-width: 720px;
   margin-bottom: 32px;
-  color: #f5eee4;
+  color: var(--color-on-dark);
   font-size: clamp(17px, 1.4vw, 21px);
   line-height: 1.8;
 }
@@ -122,12 +122,12 @@
   width: 64px;
   height: 64px;
   margin-bottom: 20px;
-  border-radius: 20px;
-  color: #152033;
+  border-radius: var(--radius-md);
+  color: var(--color-on-gold);
   background: var(--gradient-gold);
   font-size: 24px;
   font-weight: 900;
-  box-shadow: 0 14px 30px rgba(169, 106, 33, 0.25);
+  box-shadow: var(--shadow-gold);
 }
 
 .feature-card h3 {
@@ -148,17 +148,19 @@
   padding: 55px 7%;
   color: #fff;
   text-align: center;
-  background: linear-gradient(90deg, #d9880b, #9a480c);
+  background: var(--gradient-dark);
+  border-block: 1px solid rgba(215, 166, 66, 0.2);
 }
 
 .stats b {
   display: block;
+  color: var(--color-gold-light);
   margin-bottom: 4px;
   font-size: 46px;
 }
 
 .stats span {
-  color: #ffe8c2;
+  color: var(--color-gold-soft);
 }
 
 /* ===== Featured destinations ===== */

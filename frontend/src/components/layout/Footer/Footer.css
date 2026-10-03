@@ -6,12 +6,8 @@
   gap: 24px;
   padding: 30px 7%;
   color: #fff;
-  background: #0d1523;
+  background: var(--color-footer);
   border-top: 1px solid rgba(215, 166, 66, 0.16);
-}
-
-[data-theme='dark'] .footer {
-  background: #060a11;
 }
 
 .footer > div {

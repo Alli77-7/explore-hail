@@ -5,7 +5,7 @@
   padding: 52px;
   color: #fff;
   border: 1px solid rgba(215, 166, 66, 0.26);
-  border-radius: 30px;
+  border-radius: var(--radius-lg);
   background:
     radial-gradient(circle at 86% 5%, rgba(242, 199, 109, 0.3), transparent 30%),
     var(--gradient-dark);
@@ -15,7 +15,7 @@
 [dir='rtl'] .page-header {
   background:
     radial-gradient(circle at 14% 5%, rgba(242, 199, 109, 0.3), transparent 30%),
-    linear-gradient(225deg, #101827, #3c2a1e);
+    linear-gradient(225deg, var(--color-dark), #3c2a1e);
 }
 
 .page-header-eyebrow {
@@ -24,7 +24,7 @@
   padding: 8px 14px;
   border: 1px solid rgba(242, 199, 109, 0.24);
   border-radius: var(--radius-pill);
-  color: #ffe5af;
+  color: var(--color-gold-soft);
   background: rgba(215, 166, 66, 0.13);
   font-weight: 700;
 }
@@ -37,13 +37,13 @@
 
 .page-header p {
   max-width: 760px;
-  color: #f5eee6;
+  color: var(--color-on-dark);
   line-height: 1.8;
 }
 
 @media (max-width: 600px) {
   .page-header {
     padding: 34px 24px;
-    border-radius: 23px;
+    border-radius: var(--radius-md);
   }
 }

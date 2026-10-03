@@ -1,6 +1,6 @@
 .rating {
   white-space: nowrap;
-  color: #9a650e;
+  color: var(--color-gold-deep);
   font-weight: 800;
 }
 

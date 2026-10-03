@@ -18,7 +18,7 @@
 }
 
 .lang-switcher button.active {
-  color: #1e160b;
+  color: var(--color-on-gold);
   background: var(--gradient-gold);
   box-shadow: 0 8px 22px rgba(215, 166, 66, 0.26);
 }

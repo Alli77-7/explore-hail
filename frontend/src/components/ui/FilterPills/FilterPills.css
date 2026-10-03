@@ -20,7 +20,7 @@
 }
 
 .filter-pills button.active {
-  color: #1e160b;
+  color: var(--color-on-gold);
   background: var(--gradient-gold);
   box-shadow: 0 9px 22px rgba(169, 106, 33, 0.2);
 }
