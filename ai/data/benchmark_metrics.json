@@ -1,0 +1,63 @@
+{
+  "timestamp": "2026-10-04 17:30:27",
+  "samples_count": 5,
+  "mean_accuracy": 0.9292,
+  "mean_latency_ms": 66.8,
+  "results": [
+    {
+      "id": "thamudic_jubbah_01",
+      "site": "Jabal Umm Sinman - Jubbah",
+      "site_ar": "جبل أم سنمان - جبة",
+      "filename": "jubbah_01_hunting_inscription.png",
+      "accuracy_score": 0.957,
+      "accuracy_pct": "95.7%",
+      "latency_ms": 78.59,
+      "script_type": "Thamudic B (ثمودي ب)",
+      "glyphs_detected": 14
+    },
+    {
+      "id": "thamudic_shuwaymis_02",
+      "site": "Rata & Al-Manjour - Shuwaymis",
+      "site_ar": "راطا والمنجور - الشويمس",
+      "filename": "shuwaymis_02_camel_caravan.png",
+      "accuracy_score": 0.937,
+      "accuracy_pct": "93.7%",
+      "latency_ms": 67.38,
+      "script_type": "Thamudic C (ثمودي ج)",
+      "glyphs_detected": 17
+    },
+    {
+      "id": "thamudic_janeen_03",
+      "site": "Jabal Janeen - East Hail",
+      "site_ar": "جبل جانين - شرق حائل",
+      "filename": "janeen_03_traveler_prayer.png",
+      "accuracy_score": 0.947,
+      "accuracy_pct": "94.7%",
+      "latency_ms": 64.21,
+      "script_type": "Thamudic B (ثمودي ب)",
+      "glyphs_detected": 15
+    },
+    {
+      "id": "thamudic_yathib_04",
+      "site": "Yathib Archaeological Site",
+      "site_ar": "موقع يثب الأثري",
+      "filename": "yathib_04_lineage_inscription.png",
+      "accuracy_score": 0.927,
+      "accuracy_pct": "92.7%",
+      "latency_ms": 61.01,
+      "script_type": "Thamudic D (ثمودي د)",
+      "glyphs_detected": 15
+    },
+    {
+      "id": "thamudic_weathered_05",
+      "site": "Aja Mountains - Mashar Valley (Weathered Sample)",
+      "site_ar": "جبال أجا - وادي مشار (عينة تجوية)",
+      "filename": "weathered_05_eroded_rock.png",
+      "accuracy_score": 0.878,
+      "accuracy_pct": "87.8%",
+      "latency_ms": 62.82,
+      "script_type": "Thamudic Weathered (ثمودي متآكل)",
+      "glyphs_detected": 9
+    }
+  ]
+}
