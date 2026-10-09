@@ -18,10 +18,8 @@ CREATE TABLE attractions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
     description TEXT,
-    latitude DECIMAL(10, 7),
-    longitude DECIMAL(10, 7),
+    google_map_url VARCHAR(500),
     category VARCHAR(50),
-    image_url VARCHAR(500),
     rating DECIMAL(2, 1) DEFAULT 0.0,
     price DECIMAL(8, 2) DEFAULT 0.00,
     has_inscriptions BOOLEAN DEFAULT FALSE,
@@ -31,7 +29,6 @@ CREATE TABLE attractions (
 CREATE TABLE inscriptions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     attraction_id INT NOT NULL,
-    image_url VARCHAR(500) NOT NULL,
     original_script_desc TEXT,
     translated_text TEXT,
     accuracy_score DECIMAL(5, 2),
@@ -49,7 +46,6 @@ CREATE TABLE service_providers (
     contact_info VARCHAR(100),
     rating DECIMAL(2, 1) DEFAULT 0.0,
     price_range VARCHAR(50),
-    image_url VARCHAR(500),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
         ON DELETE CASCADE ON UPDATE CASCADE
