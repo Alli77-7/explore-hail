@@ -28,3 +28,62 @@ INSERT INTO bookings (tourist_id, provider_id, booking_date, status, total_price
 (2, 1, '2026-11-10 08:30:00', 'confirmed', 450.00, '0501112222', 2, 0, 'Focus the tour on Jubbah rock art.'),
 (3, 2, '2026-11-15 14:00:00', 'pending', 1200.00, '0533334444', 2, 2, 'Mountain view room if possible.'),
 (2, 3, '2026-11-10 20:00:00', 'completed', 180.00, '0501112222', 2, 0, 'Dinner reservation after the tour.');
+
+UPDATE attractions
+SET image_url = CASE name
+    WHEN 'Jubbah Rock Art'
+        THEN '/uploads/attractions-img/jubbah.svg'
+
+    WHEN 'A''arif Fort'
+        THEN '/uploads/attractions-img/arif.svg'
+
+    WHEN 'Aja Mountains'
+        THEN '/uploads/attractions-img/aja.svg'
+
+    WHEN 'Hail Museum'
+        THEN '/uploads/attractions-img/museum.svg'
+
+    WHEN 'Qishlah Palace'
+        THEN '/uploads/attractions-img/qishlah.svg'
+
+    WHEN 'Salma Mountains'
+        THEN '/uploads/attractions-img/salma.svg'
+
+    WHEN 'Shuwaymis Rock Art'
+        THEN '/uploads/attractions-img/shuwaymis.jpg'
+
+    WHEN 'Al Samra Mountain'
+        THEN '/uploads/attractions-img/samra.jpg'
+
+    WHEN 'Fayd Archaeological City'
+        THEN '/uploads/attractions-img/fayd.jpg'
+
+    WHEN 'Barzan Palace Towers'
+        THEN '/uploads/attractions-img/barzan.jpg'
+
+    WHEN 'Hatim Al Tai Palace'
+        THEN '/uploads/attractions-img/hatim-palace.jpg'
+
+    WHEN 'Taba Archaeological Village'
+        THEN '/uploads/attractions-img/taba.jpg'
+
+    WHEN 'Wadi Mashar'
+        THEN '/uploads/attractions-img/mashar.jpg'
+
+    WHEN 'Great Nafud Desert'
+        THEN '/uploads/attractions-img/nafud.jpg'
+
+    WHEN 'Ramlah Tourist Reserve'
+        THEN '/uploads/attractions-img/rumlah.svg'
+
+    WHEN 'Tuwarin Reserve'
+        THEN '/uploads/attractions-img/tuwarin-reserve.jpg'
+
+    WHEN 'Imam Turki bin Abdullah Royal Reserve'
+        THEN '/uploads/attractions-img/imam-turki-reserve.jpg'
+
+    WHEN 'King Salman bin Abdulaziz Royal Reserve'
+        THEN '/uploads/attractions-img/king-salman-reserve.jpg'
+
+    ELSE image_url
+END;
