@@ -29,6 +29,8 @@ INSERT INTO bookings (tourist_id, provider_id, booking_date, status, total_price
 (3, 2, '2026-11-15 14:00:00', 'pending', 1200.00, '0533334444', 2, 2, 'Mountain view room if possible.'),
 (2, 3, '2026-11-10 20:00:00', 'completed', 180.00, '0501112222', 2, 0, 'Dinner reservation after the tour.');
 
+
+
 UPDATE attractions
 SET image_url = CASE name
     WHEN 'Jubbah Rock Art'

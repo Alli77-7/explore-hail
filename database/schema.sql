@@ -26,6 +26,9 @@ CREATE TABLE attractions (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+ALTER TABLE attractions
+ADD COLUMN google_map_url VARCHAR(500) AFTER description;
+
 CREATE TABLE inscriptions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     attraction_id INT NOT NULL,
