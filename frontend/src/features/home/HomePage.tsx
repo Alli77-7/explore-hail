@@ -7,11 +7,11 @@ import './home.css';
 
 export default function HomePage() {
   return (
-    <>
+    <div className="home-page">
       <Hero />
       <SmartTourismFeatures />
       <StatsSection />
       <FeaturedDestinations />
-    </>
+    </div>
   );
 }

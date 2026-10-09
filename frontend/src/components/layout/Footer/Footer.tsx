@@ -11,7 +11,6 @@ export default function Footer() {
         <b><span className="footer-mark">⌖</span> {t('brand')}</b>
         <small>{t('footerTagline')}</small>
       </div>
-      <span>{t('footerProject')}</span>
     </footer>
   );
 }

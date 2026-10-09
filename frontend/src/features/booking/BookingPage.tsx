@@ -1,5 +1,6 @@
 // صفحة الحجز: قائمة الخدمات (يسار) + نموذج الحجز (يمين)
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import PageHeader from '../../components/layout/PageHeader/PageHeader';
 import Toast from '../../components/ui/Toast/Toast';
 import { useLanguage } from '../../hooks/useLanguage';
@@ -14,8 +15,25 @@ import './booking.css';
 export default function BookingPage() {
   const { t, pick } = useLanguage();
   const { toast, showToast } = useToast();
-  const [filter, setFilter] = useState<ServiceFilter>('all');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedCategory = searchParams.get('category');
+  const initialFilter: ServiceFilter = ['hotel', 'restaurant', 'tour', 'cafe', 'cars'].includes(requestedCategory ?? '')
+    ? requestedCategory as ServiceFilter
+    : 'all';
+  const [filter, setFilter] = useState<ServiceFilter>(initialFilter);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
+
+  useEffect(() => {
+    setFilter(initialFilter);
+  }, [requestedCategory]);
+
+  const handleFilterChange = (nextFilter: ServiceFilter) => {
+    setFilter(nextFilter);
+    const nextParams = new URLSearchParams(searchParams);
+    if (nextFilter === 'all') nextParams.delete('category');
+    else nextParams.set('category', nextFilter);
+    setSearchParams(nextParams, { replace: true });
+  };
 
   const visibleServices = services.filter(service => filter === 'all' || service.type === filter);
 
@@ -44,7 +62,7 @@ export default function BookingPage() {
             <p className="text-soft">{t('providersText')}</p>
           </div>
 
-          <ServiceFilters active={filter} onChange={setFilter} />
+          <ServiceFilters active={filter} onChange={handleFilterChange} />
 
           <div className="service-list">
             {visibleServices.map(service => (

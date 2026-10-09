@@ -29,6 +29,11 @@ export default function Hero({ videoSrc }: HeroProps) {
           <Button to="/trip-planner" variant="glass">{t('heroPlan')}</Button>
         </div>
       </div>
+
+      <a className="hero-scroll-cue" href="#home-experience">
+        <span>{t('scrollDown')}</span>
+        <i aria-hidden="true" />
+      </a>
     </header>
   );
 }

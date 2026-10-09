@@ -10,6 +10,7 @@ const en = {
   navTranslation: 'Translation',
   navPlanner: 'Trip Planner',
   openMenu: 'Open menu',
+  closeMenu: 'Close menu',
   toggleTheme: 'Toggle dark mode',
   backToTop: 'Back to top',
   close: 'Close',
@@ -20,6 +21,7 @@ const en = {
   heroText: 'Explore mountains, heritage sites, ancient inscriptions, local restaurants, and smart trip planning in one modern platform.',
   heroExplore: 'Explore Now',
   heroPlan: 'Plan My Trip',
+  scrollDown: '( scroll down )',
   introEyebrow: 'Explore Hail',
   introTitle: 'Your Smart Tourism Companion',
   introText: 'A premium digital experience for discovering Hail, booking local services, understanding ancient inscriptions, and building personalized journeys.',
@@ -55,7 +57,7 @@ const en = {
   entry: 'Entry',
   reviews: 'Reviews',
   addToTrip: 'Add to my trip',
-  openInMaps: 'Open in Maps',
+  openInMaps: 'View on Google Maps',
 
   // Booking
   bookingEyebrow: 'Reserve',
@@ -151,7 +153,6 @@ const en = {
 
   // Footer
   footerTagline: 'Discover more. Understand more. Experience Hail.',
-  footerProject: 'Smart Tourism Platform — UI/UX Project',
 };
 
 export type TranslationKey = keyof typeof en;
@@ -164,6 +165,7 @@ const ar: Record<TranslationKey, string> = {
   navTranslation: 'الترجمة',
   navPlanner: 'مخطط الرحلات',
   openMenu: 'فتح القائمة',
+  closeMenu: 'إغلاق القائمة',
   toggleTheme: 'تبديل الوضع الليلي',
   backToTop: 'العودة للأعلى',
   close: 'إغلاق',
@@ -173,6 +175,7 @@ const ar: Record<TranslationKey, string> = {
   heroText: 'استكشف الجبال والمعالم التراثية والنقوش القديمة والمطاعم المحلية وخطط رحلتك بذكاء في منصة واحدة.',
   heroExplore: 'ابدأ الاستكشاف',
   heroPlan: 'خطط رحلتي',
+  scrollDown: '( مرر للأسفل )',
   introEyebrow: 'استكشف حائل',
   introTitle: 'رفيقك السياحي الذكي',
   introText: 'تجربة رقمية متكاملة لاكتشاف حائل وحجز الخدمات المحلية وفهم النقوش القديمة وبناء رحلات مخصصة.',
@@ -202,12 +205,12 @@ const ar: Record<TranslationKey, string> = {
   historical: 'تاريخي',
   natural: 'طبيعي',
   cultural: 'ثقافي',
-  adventure: 'مغامرة',
+  adventure: 'مغامرات',
   location: 'الموقع',
   entry: 'الدخول',
   reviews: 'التقييمات',
   addToTrip: 'أضف إلى رحلتي',
-  openInMaps: 'افتح في الخرائط',
+  openInMaps: 'عرض في خرائط Google',
 
   bookingEyebrow: 'احجز',
   bookingTitle: 'حجز الخدمات',
@@ -299,7 +302,6 @@ const ar: Record<TranslationKey, string> = {
   planUpdated: 'خطة رحلتك جاهزة',
 
   footerTagline: 'اكتشف أكثر، افهم أكثر، وعش تجربة حائل.',
-  footerProject: 'منصة سياحية ذكية — مشروع واجهات وتجربة مستخدم',
 };
 
 export const translations = { en, ar };

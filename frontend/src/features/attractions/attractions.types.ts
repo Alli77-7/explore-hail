@@ -8,11 +8,14 @@ export interface Attraction {
   nameAr: string;
   description: string;
   descriptionAr: string;
+  longDescription?: string;
+  longDescriptionAr?: string;
   category: AttractionCategory;
   image: string;
-  rating: number;
-  reviews: number;
-  price: number; // 0 = مجاني
+  rating?: number;
+  reviews?: number;
+  price?: number; // 0 = مجاني
   location: string;
   locationAr: string;
+  googleMapsUrl: string;
 }

@@ -13,7 +13,7 @@ export default function FeaturedDestinations() {
   const featured = attractions.slice(0, 3);
 
   return (
-    <section className="container">
+    <section className="container home-section home-destinations">
       <SectionTitle eyebrow={t('featuredEyebrow')} title={t('featuredTitle')} />
 
       <div className="destination-grid">
@@ -29,7 +29,11 @@ export default function FeaturedDestinations() {
             <img src={attraction.image} alt={pick(attraction.name, attraction.nameAr)} loading="lazy" decoding="async" />
             <div>
               <h3>{pick(attraction.name, attraction.nameAr)}</h3>
-              <p>{t(attraction.category)}</p>
+              <p className="destination-meta">
+                <span>{t(attraction.category)}</span>
+                <span aria-hidden="true">•</span>
+                <span>{pick(attraction.location, attraction.locationAr)}</span>
+              </p>
             </div>
           </Card>
         ))}
