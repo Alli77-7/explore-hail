@@ -1,0 +1,49 @@
+.page-header {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 36px;
+  padding: 52px;
+  color: #fff;
+  border: 1px solid rgba(215, 166, 66, 0.26);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at 86% 5%, rgba(242, 199, 109, 0.3), transparent 30%),
+    var(--gradient-dark);
+  box-shadow: 0 20px 54px rgba(16, 24, 39, 0.18);
+}
+
+[dir='rtl'] .page-header {
+  background:
+    radial-gradient(circle at 14% 5%, rgba(242, 199, 109, 0.3), transparent 30%),
+    linear-gradient(225deg, var(--color-dark), #3c2a1e);
+}
+
+.page-header-eyebrow {
+  display: inline-flex;
+  margin-bottom: 18px;
+  padding: 8px 14px;
+  border: 1px solid rgba(242, 199, 109, 0.24);
+  border-radius: var(--radius-pill);
+  color: var(--color-gold-soft);
+  background: rgba(215, 166, 66, 0.13);
+  font-weight: 700;
+}
+
+.page-header h1 {
+  margin-bottom: 13px;
+  font-size: clamp(36px, 4vw, 56px);
+  line-height: 1.15;
+}
+
+.page-header p {
+  max-width: 760px;
+  color: var(--color-on-dark);
+  line-height: 1.8;
+}
+
+@media (max-width: 600px) {
+  .page-header {
+    padding: 34px 24px;
+    border-radius: var(--radius-md);
+  }
+}

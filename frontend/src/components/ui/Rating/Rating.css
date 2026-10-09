@@ -1,0 +1,9 @@
+.rating {
+  white-space: nowrap;
+  color: var(--color-gold-deep);
+  font-weight: 800;
+}
+
+[data-theme='dark'] .rating {
+  color: var(--color-gold-light);
+}

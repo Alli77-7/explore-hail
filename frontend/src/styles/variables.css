@@ -1,0 +1,87 @@
+/* =========================================================
+   متغيرات التصميم (ألوان، مسافات، ظلال) — هوية "فخامة الصحراء"
+   أي لون نبي نغيّره في الموقع كله نغيّره من هنا فقط
+========================================================= */
+
+:root {
+  /* Layout */
+  --navbar-height: 78px;
+  --container-width: 1220px;
+
+  /* Brand colors */
+  --color-dark: #101827;
+  --color-nav-start: #101725;
+  --color-nav-end: #2b2118;
+  --color-gold: #d7a642;
+  --color-gold-light: #f2c76d;
+  --color-gold-deep: #a96a21;
+  --color-gold-soft: #ffe8c2; /* نص فاتح فوق الخلفيات الداكنة والصور */
+  --color-on-gold: #1e160b; /* لون النص فوق الأزرار الذهبية */
+  --color-on-dark: #f5eee6; /* فقرات فوق الخلفيات الداكنة */
+  --color-footer: #0d1523;
+
+  /* الخزامى — نبتة صحراء حائل، لون ميزة الترجمة الذكية */
+  --color-lavender: #7c3aed;
+  --color-lavender-deep: #4c1d95;
+  --color-lavender-night: #2d1b50;
+  --color-lavender-light: #a78bfa;
+  --color-lavender-line: rgba(109, 40, 217, 0.14);
+  --color-green: #148444;
+  --color-red: #b42318;
+
+  /* Surfaces & text (تتغير في الوضع الليلي) */
+  --color-sand: #fffaf3;
+  --color-text: #101827;
+  --color-text-soft: #5f6775;
+  --color-card: #ffffff;
+  --color-muted: #f7f6f3;
+  --color-input: #ffffff;
+  --color-input-border: #d7dbe1;
+  --color-line: rgba(168, 117, 47, 0.18);
+
+  /* Gradients */
+  --gradient-gold: linear-gradient(135deg, var(--color-gold-light), var(--color-gold-deep));
+  --gradient-dark: linear-gradient(135deg, var(--color-dark), #3c2a1e);
+  --gradient-lavender: linear-gradient(135deg, var(--color-lavender), var(--color-lavender-deep));
+
+  /* Radius */
+  --radius-xs: 12px;
+  --radius-sm: 14px;
+  --radius-md: 22px;
+  --radius-lg: 28px;
+  --radius-pill: 999px;
+
+  /* Spacing scale */
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 20px;
+  --space-lg: 32px;
+  --space-xl: 56px;
+  --space-2xl: 82px;
+
+  /* Shadows */
+  --shadow-card: 0 18px 50px rgba(63, 44, 24, 0.1);
+  --shadow-hover: 0 26px 58px rgba(63, 44, 24, 0.14);
+  --shadow-gold: 0 13px 28px rgba(169, 106, 33, 0.25), 0 0 24px rgba(215, 166, 66, 0.18);
+  --shadow-gold-hover: 0 18px 36px rgba(169, 106, 33, 0.35), 0 0 32px rgba(215, 166, 66, 0.25);
+
+  /* Fonts */
+  --font-en: 'Poppins', 'Cairo', sans-serif;
+  --font-ar: 'Cairo', 'Poppins', sans-serif;
+}
+
+/* الوضع الليلي: نغيّر قيم المتغيرات فقط، والمكوّنات تتحدّث تلقائياً */
+[data-theme='dark'] {
+  --color-sand: #0c111b;
+  --color-text: #f7f3ea;
+  --color-text-soft: #b7bec9;
+  --color-card: #141b28;
+  --color-muted: #101722;
+  --color-input: #101722;
+  --color-input-border: #293344;
+  --color-line: rgba(242, 199, 109, 0.13);
+  --color-footer: #060a11;
+  --color-lavender-line: rgba(167, 139, 250, 0.18);
+  --shadow-card: 0 18px 50px rgba(0, 0, 0, 0.35);
+  --shadow-hover: 0 26px 58px rgba(0, 0, 0, 0.45);
+}
