@@ -12,7 +12,7 @@ from .preprocess import (
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 
-DATA_DIR = BASE_DIR / "dataset" / "letters"
+DATA_DIR = Path(r"D:\Thamudic_classes_CH4_test")
 MODEL_PATH = BASE_DIR / "models" / "resnet18_best.pth"
 
 
@@ -97,8 +97,8 @@ def predict_image(image_path):
 if __name__ == "__main__":
 
     image_path = input(
-        "Enter image path: "
-    )
+    "Enter image path: "
+).strip().strip('"').strip("'")
 
     result = predict_image(
         image_path

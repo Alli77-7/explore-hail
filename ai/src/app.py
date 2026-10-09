@@ -1,4 +1,5 @@
-import os
+# in terminal "python -m uvicorn src.app:app --reload"
+import os 
 import tempfile
 
 from fastapi import FastAPI, UploadFile, File, HTTPException
@@ -26,7 +27,7 @@ async def predict(
 ):
     allowed_types = {
         "image/jpeg",
-        "image/png",
+        "im age/png",
         "image/bmp"
     }
 
@@ -66,3 +67,4 @@ async def predict(
     finally:
         if temp_path and os.path.exists(temp_path):
             os.remove(temp_path)
+            

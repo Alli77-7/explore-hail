@@ -24,7 +24,7 @@ from preprocess import (
 from model import create_model
 
 
-DATA_DIR = Path("dataset/letters")
+DATA_DIR = Path(r"D:\Thamudic_classes_CH4_test")
 MODEL_PATH = Path("models/resnet18_best.pth")
 BATCH_SIZE = 64
 

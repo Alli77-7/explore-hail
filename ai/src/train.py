@@ -20,7 +20,7 @@ from preprocess import (
 from model import create_model
 
 
-DATA_DIR = Path("dataset/letters")
+DATA_DIR = Path(r"D:\Thamudic_classes_CH4_test")
 BATCH_SIZE = 64
 LEARNING_RATE = 0.0001
 NUM_EPOCHS = 20
