@@ -23,3 +23,19 @@ Thumbs.db
 
 # Cache
 .cache/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# AI trained models
+*.pth
+*.pt
+
+# AI outputs
+ai/outputs/
