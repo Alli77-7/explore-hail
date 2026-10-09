@@ -8,7 +8,7 @@ INSERT INTO users (full_name, email, password, user_type) VALUES
 ('Khaled Al-Anazi', 'khaled.anazi@outlook.com', 'hashed_pass_4', 'provider');
 
 INSERT INTO attractions (name, description, google_map_url, category, rating, price, image_url, has_inscriptions) VALUES
-('Jubbah Rock Art', 'Ancient rock carvings featuring Thamudic inscriptions and rock art dating back to 10,000 BC.', 'https://www.google.com/maps/search/?api=1&query=Jubbah+Rock+Art+Hail', 'historical', 4.9, 0.00, '/assets/images/attractions/jubbah.jpg', TRUE),
+('Jubbah Rock Art', 'Ancient rock carvings featuring Thamudic inscriptions and rock art dating back to 10,000 BC.', 'https://www.google.com/maps/search/?api=1&query=Jubbah+Rock+Art+Hail', 'historical', 4.9, 0.00, '/uploads/attractions-img/jubbah.svg', TRUE),
 ('Aja Mountains', 'A spectacular mountain range famous for its granite peaks and natural beauty.', 'https://www.google.com/maps/search/?api=1&query=Aja+Mountains+Hail', 'nature', 4.7, 0.00, '/assets/images/attractions/aja_mountains.jpg', FALSE),
 ('Al-Qishlah Palace', 'A historic mud-brick fortress in the center of Hail city.', 'https://www.google.com/maps/search/?api=1&query=Qishlah+Palace+Hail', 'cultural', 4.5, 15.00, '/assets/images/attractions/qishlah.jpg', FALSE),
 ('Hail Regional Museum', 'A museum showcasing the rich history and cultural heritage of the Hail region.', 'https://www.google.com/maps/search/?api=1&query=Hail+Regional+Museum', 'cultural', 4.6, 25.00, '/assets/images/attractions/hail_museum.jpg', FALSE),
@@ -28,6 +28,8 @@ INSERT INTO bookings (tourist_id, provider_id, booking_date, status, total_price
 (2, 1, '2026-11-10 08:30:00', 'confirmed', 450.00, '0501112222', 2, 0, 'Focus the tour on Jubbah rock art.'),
 (3, 2, '2026-11-15 14:00:00', 'pending', 1200.00, '0533334444', 2, 2, 'Mountain view room if possible.'),
 (2, 3, '2026-11-10 20:00:00', 'completed', 180.00, '0501112222', 2, 0, 'Dinner reservation after the tour.');
+
+
 
 UPDATE attractions
 SET image_url = CASE name
@@ -86,4 +88,5 @@ SET image_url = CASE name
         THEN '/uploads/attractions-img/king-salman-reserve.jpg'
 
     ELSE image_url
+    
 END;
