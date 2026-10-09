@@ -8,7 +8,6 @@ CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     full_name VARCHAR(100) NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE,
-    phone VARCHAR(20),
     password VARCHAR(255) NOT NULL,
     user_type ENUM('tourist', 'provider', 'admin') NOT NULL DEFAULT 'tourist',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -22,6 +21,7 @@ CREATE TABLE attractions (
     category VARCHAR(50),
     rating DECIMAL(2, 1) DEFAULT 0.0,
     price DECIMAL(8, 2) DEFAULT 0.00,
+    image_url VARCHAR(500),
     has_inscriptions BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -29,6 +29,8 @@ CREATE TABLE attractions (
 CREATE TABLE inscriptions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     attraction_id INT NOT NULL,
+    inscription_type VARCHAR(50),
+    image_url VARCHAR(500),
     original_script_desc TEXT,
     translated_text TEXT,
     accuracy_score DECIMAL(5, 2),
@@ -46,6 +48,7 @@ CREATE TABLE service_providers (
     contact_info VARCHAR(100),
     rating DECIMAL(2, 1) DEFAULT 0.0,
     price_range VARCHAR(50),
+    image_url VARCHAR(500),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
         ON DELETE CASCADE ON UPDATE CASCADE
