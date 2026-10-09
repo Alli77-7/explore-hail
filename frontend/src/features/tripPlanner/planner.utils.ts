@@ -2,8 +2,35 @@
 import { attractions } from '../attractions/attractions.data';
 import { services } from '../booking/booking.data';
 import { interestCategories } from './planner.data';
-import type { PlanDay, TripPreferences } from './planner.types';
+import type { PlanActivity, PlanDay, TripPreferences } from './planner.types';
 
+type ResolvedPlace = Omit<PlanActivity, 'time' | 'reason'>;
+
+// يحوّل id المكان (من الخطة الذكية أو المحلية) لاسم وصورة من بياناتنا
+export function resolvePlace(placeId: string): ResolvedPlace | null {
+  if (placeId === 'local-lunch') return { kind: 'lunch', title: 'Local lunch', titleAr: 'غداء محلي' };
+  if (placeId === 'free-time') return { kind: 'rest', title: 'Free time to rest', titleAr: 'وقت حر للراحة' };
+
+  const attraction = attractions.find(place => place.id === placeId);
+  if (attraction) {
+    return {
+      kind: 'attraction',
+      title: attraction.name,
+      titleAr: attraction.nameAr,
+      image: attraction.image,
+      mapsUrl: attraction.googleMapsUrl,
+    };
+  }
+
+  const service = services.find(item => item.id === placeId);
+  if (service && (service.type === 'restaurant' || service.type === 'cafe')) {
+    return { kind: service.type, title: service.name, titleAr: service.nameAr, image: service.image };
+  }
+
+  return null;
+}
+
+// الخطة الأساسية بدون AI: تظهر قبل الضغط على الزر أو لو المخطط الذكي ما اشتغل
 export function buildItinerary({ interests, days }: TripPreferences): PlanDay[] {
   // 1) نختار المعالم اللي تناسب اهتمامات المستخدم
   const categories = interests.flatMap(interest => interestCategories[interest]);
@@ -21,21 +48,20 @@ export function buildItinerary({ interests, days }: TripPreferences): PlanDay[] 
 
   for (let day = 1; day <= days; day++) {
     const index = day - 1;
-    const morning = places[(index * 2) % places.length];
-    const evening = places[(index * 2 + 1) % places.length];
-    const restaurant = restaurants[index % restaurants.length];
-    const cafe = cafes[index % cafes.length];
+    const ids = [
+      places[(index * 2) % places.length].id,
+      lovesFood ? restaurants[index % restaurants.length].id : 'local-lunch',
+      places[(index * 2 + 1) % places.length].id,
+      cafes[index % cafes.length].id,
+    ];
+    const times = ['09:00', '13:00', '17:00', '20:00'];
 
     plan.push({
       day,
-      activities: [
-        { time: '09:00', title: morning.name, titleAr: morning.nameAr },
-        lovesFood
-          ? { time: '13:00', title: restaurant.name, titleAr: restaurant.nameAr }
-          : { time: '13:00', title: 'Local lunch experience', titleAr: 'تجربة غداء محلية' },
-        { time: '17:00', title: evening.name, titleAr: evening.nameAr },
-        { time: '20:00', title: cafe.name, titleAr: cafe.nameAr },
-      ],
+      activities: ids.flatMap((id, i) => {
+        const place = resolvePlace(id);
+        return place ? [{ ...place, time: times[i] }] : [];
+      }),
     });
   }
 

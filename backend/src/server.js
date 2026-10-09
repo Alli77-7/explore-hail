@@ -1,7 +1,10 @@
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, "../.env") });
+
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
 const db = require("./config/database");
+const { parsePreferences, generatePlan } = require("./planner/aiPlanner");
 
 const app = express();
 
@@ -36,6 +39,28 @@ app.get("/api/attractions", (req, res) => {
 
         res.json(results);
     });
+});
+
+// Smart trip plan (LLM)
+app.post("/api/plan", async (req, res) => {
+    const preferences = parsePreferences(req.body);
+
+    if (!preferences) {
+        return res.status(400).json({
+            error: "Invalid trip preferences"
+        });
+    }
+
+    try {
+        const plan = await generatePlan(preferences);
+        res.json(plan);
+    } catch (err) {
+        console.error("Failed to generate plan:", err.message);
+
+        res.status(502).json({
+            error: "Failed to generate plan"
+        });
+    }
 });
 
 // Server
