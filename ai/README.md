@@ -8,7 +8,7 @@ This module handles Thamudic rock inscription recognition and translation for th
 - Arabic and English translation with archaeological interpretation.
 - REST API endpoints for frontend and backend integration.
 
-## Setup
+## Setupp
 ```bash
 pip install -r requirements.txt
 ```
