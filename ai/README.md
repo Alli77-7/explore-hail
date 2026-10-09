@@ -1,29 +1,31 @@
-# AI Module - Explore Hail
+# Explore Hail AI Module
 
-This module handles Thamudic rock inscription recognition and translation for the Explore Hail platform.
+AI module for recognizing Thamudic characters using PyTorch and ResNet-18.
 
-## Features
-- Rock image preprocessing (contrast enhancement, noise reduction, binarization).
-- Thamudic alphabet detection and transliteration.
-- Arabic and English translation with archaeological interpretation.
-- REST API endpoints for frontend and backend integration.
+## Structure
 
-## Setup
+- `src/model.py` - Creates the ResNet-18 model.
+- `src/preprocess.py` - Preprocesses and prepares images.
+- `src/dataset.py` - Loads and splits the dataset.
+- `src/train.py` - Trains the model.
+- `src/evaluate.py` - Evaluates model performance.
+- `src/predict.py` - Predicts a Thamudic character from an image.
+- `src/app.py` - FastAPI service for AI predictions.
+- `src/check_environment.py` - Checks PyTorch and device configuration.
+- `src/test_model.py` - Tests model initialization.
+
+## Model
+
+- Architecture: ResNet-18
+- Framework: PyTorch
+- Optimizer: Adam
+- Learning Rate: 0.0001
+- Batch Size: 64
+- Epochs: 20
+
+## API
+
+Run the AI API:
+
 ```bash
-pip install -r requirements.txt
-```
-
-## Running the API
-```bash
-python app.py
-```
-
-## Running Tests
-```bash
-pytest tests/test_ai_pipeline.py -v
-```
-
-## Running Benchmarks
-```bash
-python benchmark.py
-```
+python -m uvicorn src.app:app --reload
