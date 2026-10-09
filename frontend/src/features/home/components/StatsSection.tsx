@@ -12,7 +12,7 @@ export default function StatsSection() {
   ];
 
   return (
-    <section className="stats">
+    <section className="stats" aria-label={t('statExperience')}>
       {stats.map(stat => (
         <div key={stat.label}>
           <b>{stat.value}</b>

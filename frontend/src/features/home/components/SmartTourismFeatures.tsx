@@ -15,7 +15,7 @@ export default function SmartTourismFeatures() {
   const { t } = useLanguage();
 
   return (
-    <section className="container">
+    <section id="home-experience" className="container home-section home-intro">
       <SectionTitle eyebrow={t('introEyebrow')} title={t('introTitle')} text={t('introText')} centered />
 
       <div className="feature-grid">

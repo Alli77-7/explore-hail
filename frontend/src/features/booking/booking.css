@@ -1,6 +1,6 @@
 .booking-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(340px, 0.85fr);
+  grid-template-columns: minmax(0, 1.2fr) minmax(340px, 0.8fr);
   gap: 30px;
   align-items: start;
 }
@@ -76,9 +76,15 @@
 .booking-form {
   position: sticky;
   top: calc(var(--navbar-height) + 24px);
+  align-self: start;
   display: grid;
   gap: 15px;
+  height: auto;
+  max-height: calc(100vh - var(--navbar-height) - 48px);
+  max-height: calc(100dvh - var(--navbar-height) - 48px);
   padding: 28px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .booking-form h2 {
@@ -117,6 +123,11 @@
 
   .booking-form {
     position: static;
+    top: auto;
+    align-self: auto;
+    max-height: none;
+    overflow-y: visible;
+    overscroll-behavior: auto;
   }
 }
 

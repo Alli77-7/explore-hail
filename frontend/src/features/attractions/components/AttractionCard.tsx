@@ -25,16 +25,23 @@ export default function AttractionCard({ attraction, onViewDetails }: Attraction
       <div className="attraction-card-body">
         <div className="card-top">
           <h3>{name}</h3>
-          <Rating value={attraction.rating} />
+          {attraction.rating !== undefined && <Rating value={attraction.rating} />}
         </div>
         <p>{pick(attraction.description, attraction.descriptionAr)}</p>
         <div className="attraction-card-meta">
           <span>⌖ {pick(attraction.location, attraction.locationAr)}</span>
-          <strong>{attraction.price ? `${attraction.price} ${t('sar')}` : t('free')}</strong>
+          {attraction.price !== undefined && (
+            <strong>{attraction.price ? `${attraction.price} ${t('sar')}` : t('free')}</strong>
+          )}
         </div>
-        <Button size="sm" onClick={() => onViewDetails(attraction)}>
-          {t('viewDetails')} →
-        </Button>
+        <div className="attraction-card-actions">
+          <Button size="sm" onClick={() => onViewDetails(attraction)}>
+            {t('viewDetails')} →
+          </Button>
+          <Button size="sm" variant="ghost" href={attraction.googleMapsUrl}>
+            {t('openInMaps')}
+          </Button>
+        </div>
       </div>
     </Card>
   );
