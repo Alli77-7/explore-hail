@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import PageHeader from '../../components/layout/PageHeader/PageHeader';
 import { useLanguage } from '../../hooks/useLanguage';
-import { attractions } from './attractions.data';
+import { getAttractions } from '../../services/attractions';
 import type { Attraction } from './attractions.types';
 import AttractionCard from './components/AttractionCard';
 import AttractionDetails from './components/AttractionDetails';
@@ -19,6 +19,26 @@ const reserveDisplayOrder = [
 
 export default function AttractionsPage() {
   const { t } = useLanguage();
+  const [attractions, setAttractions] = useState<Attraction[]>([]);
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState<string | null>(null);
+
+useEffect(() => {
+  async function loadAttractions() {
+    try {
+      const data = await getAttractions();
+      setAttractions(data);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to load attractions");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  loadAttractions();
+}, []);
+
   const [searchParams, setSearchParams] = useSearchParams();
   const requestedCategory = searchParams.get('category');
   const initialFilter: AttractionFilter = ['historical', 'natural', 'cultural', 'adventure'].includes(requestedCategory ?? '')
@@ -56,6 +76,14 @@ export default function AttractionsPage() {
       if (secondIndex === -1) return -1;
       return firstIndex - secondIndex;
     });
+
+    if (loading) {
+  return <div>Loading attractions...</div>;
+}
+
+if (error) {
+  return <div>{error}</div>;
+}
 
   return (
     <div className="container page-container">
