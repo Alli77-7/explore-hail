@@ -1,4 +1,4 @@
-// كرت معلم واحد: صورة + تصنيف + اسم + تقييم + وصف + موقع + سعر
+// كرت معلم واحد: صورة + تصنيف + اسم + تقييم + وصف + سعر
 import Badge from '../../../components/ui/Badge/Badge';
 import Button from '../../../components/ui/Button/Button';
 import Card from '../../../components/ui/Card/Card';
@@ -11,36 +11,79 @@ interface AttractionCardProps {
   onViewDetails: (attraction: Attraction) => void;
 }
 
-export default function AttractionCard({ attraction, onViewDetails }: AttractionCardProps) {
+export default function AttractionCard({
+  attraction,
+  onViewDetails,
+}: AttractionCardProps) {
   const { t, pick } = useLanguage();
-  const name = pick(attraction.name, attraction.nameAr);
+
+  const name = pick(
+    attraction.name,
+    attraction.name_ar ?? attraction.name
+  );
+
+  const description = pick(
+    attraction.description ?? '',
+    attraction.description_ar ?? attraction.description ?? ''
+  );
+
+  const imageUrl = attraction.image_url
+    ? `http://localhost:3000${attraction.image_url}`
+    : '';
 
   return (
     <Card className="attraction-card">
       <div className="attraction-card-image">
-        <img src={attraction.image} alt={name} loading="lazy" decoding="async" />
-        <Badge variant="dark">{t(attraction.category)}</Badge>
+        <img
+          src={imageUrl}
+          alt={name}
+          loading="lazy"
+          decoding="async"
+        />
+
+        <Badge variant="dark">
+          {t(attraction.category)}
+        </Badge>
       </div>
 
       <div className="attraction-card-body">
         <div className="card-top">
           <h3>{name}</h3>
-          {attraction.rating !== undefined && <Rating value={attraction.rating} />}
-        </div>
-        <p>{pick(attraction.description, attraction.descriptionAr)}</p>
-        <div className="attraction-card-meta">
-          <span>⌖ {pick(attraction.location, attraction.locationAr)}</span>
-          {attraction.price !== undefined && (
-            <strong>{attraction.price ? `${attraction.price} ${t('sar')}` : t('free')}</strong>
+
+          {attraction.rating !== null && (
+            <Rating value={Number(attraction.rating)} />
           )}
         </div>
+
+        <p>{description}</p>
+
+        <div className="attraction-card-meta">
+          {attraction.price !== null && (
+            <strong>
+              {Number(attraction.price) > 0
+                ? `${Number(attraction.price)} ${t('sar')}`
+                : t('free')}
+            </strong>
+          )}
+        </div>
+
         <div className="attraction-card-actions">
-          <Button size="sm" onClick={() => onViewDetails(attraction)}>
+          <Button
+            size="sm"
+            onClick={() => onViewDetails(attraction)}
+          >
             {t('viewDetails')} →
           </Button>
-          <Button size="sm" variant="ghost" href={attraction.googleMapsUrl}>
-            {t('openInMaps')}
-          </Button>
+
+          {attraction.google_map_url && (
+            <Button
+              size="sm"
+              variant="ghost"
+              href={attraction.google_map_url}
+            >
+              {t('openInMaps')}
+            </Button>
+          )}
         </div>
       </div>
     </Card>

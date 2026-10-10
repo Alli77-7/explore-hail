@@ -300,3 +300,4 @@ WHERE id BETWEEN 1 AND 18;
 SELECT id, name, name_ar, description_ar
 FROM attractions
 ORDER BY id;
+

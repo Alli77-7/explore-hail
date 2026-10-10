@@ -12,17 +12,28 @@ interface AttractionDetailsProps {
   onClose: () => void;
 }
 
-export default function AttractionDetails({ attraction, onClose }: AttractionDetailsProps) {
+export default function AttractionDetails({
+  attraction,
+  onClose,
+}: AttractionDetailsProps) {
   const { t, pick } = useLanguage();
   const navigate = useNavigate();
 
   if (!attraction) return null;
 
-  const name = pick(attraction.name, attraction.nameAr);
-  const description = pick(
-    attraction.longDescription ?? attraction.description,
-    attraction.longDescriptionAr ?? attraction.descriptionAr,
+  const name = pick(
+    attraction.name,
+    attraction.name_ar ?? attraction.name
   );
+
+  const description = pick(
+    attraction.description ?? '',
+    attraction.description_ar ?? attraction.description ?? ''
+  );
+
+  const imageUrl = attraction.image_url
+    ? `http://localhost:3000${attraction.image_url}`
+    : '';
 
   const addToTrip = () => {
     onClose();
@@ -30,41 +41,61 @@ export default function AttractionDetails({ attraction, onClose }: AttractionDet
   };
 
   return (
-    <Modal open onClose={onClose} labelledBy="attraction-details-title">
+    <Modal
+      open
+      onClose={onClose}
+      labelledBy="attraction-details-title"
+    >
       <div className="details-media">
-        <img src={attraction.image} alt={name} />
-        <Badge variant="dark">{t(attraction.category)}</Badge>
+        <img src={imageUrl} alt={name} />
+
+        <Badge variant="dark">
+          {t(attraction.category)}
+        </Badge>
       </div>
 
       <div className="details-body">
         <div className="card-top">
-          <h2 id="attraction-details-title">{name}</h2>
-          {attraction.rating !== undefined && <Rating value={attraction.rating} />}
+          <h2 id="attraction-details-title">
+            {name}
+          </h2>
+
+          {attraction.rating !== null && (
+            <Rating value={Number(attraction.rating)} />
+          )}
         </div>
-        <p className="text-soft">{description}</p>
+
+        <p className="text-soft">
+          {description}
+        </p>
 
         <ul className="details-facts">
-          <li>
-            <small>{t('location')}</small>
-            <b>{pick(attraction.location, attraction.locationAr)}</b>
-          </li>
-          {attraction.price !== undefined && (
+          {attraction.price !== null && (
             <li>
               <small>{t('entry')}</small>
-              <b>{attraction.price ? `${attraction.price} ${t('sar')}` : t('free')}</b>
-            </li>
-          )}
-          {attraction.reviews !== undefined && (
-            <li>
-              <small>{t('reviews')}</small>
-              <b>{attraction.reviews}+</b>
+
+              <b>
+                {Number(attraction.price) > 0
+                  ? `${Number(attraction.price)} ${t('sar')}`
+                  : t('free')}
+              </b>
             </li>
           )}
         </ul>
 
         <div className="details-actions">
-          <Button onClick={addToTrip}>{t('addToTrip')}</Button>
-          <Button variant="ghost" href={attraction.googleMapsUrl}>{t('openInMaps')}</Button>
+          <Button onClick={addToTrip}>
+            {t('addToTrip')}
+          </Button>
+
+          {attraction.google_map_url && (
+            <Button
+              variant="ghost"
+              href={attraction.google_map_url}
+            >
+              {t('openInMaps')}
+            </Button>
+          )}
         </div>
       </div>
     </Modal>

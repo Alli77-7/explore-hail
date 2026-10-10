@@ -1,4 +1,4 @@
-// بيانات معالم حائل — لإضافة معلم جديد نضيف عنصر هنا فقط
+/* بيانات معالم حائل — لإضافة معلم جديد نضيف عنصر هنا فقط
 import type { Attraction } from './attractions.types';
 import jubbahImg from '../../assets/images/attractions/jubbah.svg';
 import arifImg from '../../assets/images/attractions/arif.svg';
@@ -287,3 +287,4 @@ export const attractions: Attraction[] = [
     googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=King%20Salman%20bin%20Abdulaziz%20Royal%20Reserve%2C%20Saudi%20Arabia',
   },
 ];
+*/

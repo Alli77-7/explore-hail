@@ -1,12 +1,26 @@
-// شريط الأرقام البرتقالي
+import { useEffect, useState } from 'react';
 import { useLanguage } from '../../../hooks/useLanguage';
-import { attractions } from '../../attractions/attractions.data';
+import { getAttractions } from '../../../services/attractions';
 
 export default function StatsSection() {
   const { t } = useLanguage();
+  const [attractionsCount, setAttractionsCount] = useState(0);
+
+  useEffect(() => {
+    async function loadAttractionsCount() {
+      try {
+        const data = await getAttractions();
+        setAttractionsCount(data.length);
+      } catch (error) {
+        console.error('Failed to load attractions count:', error);
+      }
+    }
+
+    loadAttractionsCount();
+  }, []);
 
   const stats = [
-    { value: `${attractions.length}+`, label: t('statDestinations') },
+    { value: `${attractionsCount}+`, label: t('statDestinations') },
     { value: '1000+', label: t('statInscriptions') },
     { value: '24/7', label: t('statExperience') },
   ];
