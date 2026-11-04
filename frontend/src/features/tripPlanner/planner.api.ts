@@ -1,7 +1,7 @@
 // طلب الخطة الذكية من الباك إند (LLM)
 import type { Language } from '../../types';
-import { services } from '../booking/booking.data';
 import { getAttractions } from '../../services/attractions';
+import { getServices } from '../../services/services';
 import { resolvePlace } from './planner.utils';
 import type {
   Interest,
@@ -63,7 +63,7 @@ export async function fetchSmartPlan(
     await response.json();
 
   // نجيب المعالم من قاعدة البيانات عبر الـ API
-  const attractions = await getAttractions();
+  const [attractions, services] = await Promise.all([getAttractions(), getServices()]);
 
   const hotel =
     data.stay &&
@@ -98,7 +98,8 @@ export async function fetchSmartPlan(
         activity => {
           const place = resolvePlace(
             activity.placeId,
-            attractions
+            attractions,
+            services
           );
 
           return place

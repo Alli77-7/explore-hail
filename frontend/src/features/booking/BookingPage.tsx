@@ -5,7 +5,8 @@ import PageHeader from '../../components/layout/PageHeader/PageHeader';
 import Toast from '../../components/ui/Toast/Toast';
 import { useLanguage } from '../../hooks/useLanguage';
 import { useToast } from '../../hooks/useToast';
-import { services } from './booking.data';
+import { getServices } from '../../services/services';
+import { createBooking } from '../../services/bookings';
 import type { BookingRequest, Service } from './booking.types';
 import BookingForm from './components/BookingForm';
 import ServiceCard from './components/ServiceCard';
@@ -22,6 +23,11 @@ export default function BookingPage() {
     : 'all';
   const [filter, setFilter] = useState<ServiceFilter>(initialFilter);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [services, setServices] = useState<Service[]>([]);
+
+  useEffect(() => {
+    getServices().then(setServices).catch(error => console.error(error));
+  }, []);
 
   useEffect(() => {
     setFilter(initialFilter);
@@ -40,15 +46,18 @@ export default function BookingPage() {
   const handleSelect = (service: Service) => {
     setSelectedService(service);
     // في الجوال النموذج تحت القائمة، فننزل له تلقائياً
-    if (window.innerWidth <= 900) {
-      document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' });
-    }
   };
 
-  const handleSubmit = (request: BookingRequest) => {
+  const handleSubmit = async (request: BookingRequest) => {
     const service = services.find(item => item.id === request.serviceId);
     if (!service) return;
-    showToast(t('bookingSent').replace('{name}', pick(service.name, service.nameAr)));
+    try {
+      await createBooking(request);
+      showToast(t('bookingSent').replace('{name}', pick(service.name, service.nameAr)));
+    } catch (error) {
+      console.error(error);
+      showToast('تعذر إرسال الحجز، حاول مرة أخرى', 'error');
+    }
   };
 
   return (

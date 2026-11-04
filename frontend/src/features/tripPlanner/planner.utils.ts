@@ -1,6 +1,7 @@
 import { getAttractions } from '../../services/attractions';
 import type { Attraction } from '../attractions/attractions.types';
-import { services } from '../booking/booking.data';
+import { getServices } from '../../services/services';
+import type { Service } from '../booking/booking.types';
 import { interestCategories } from './planner.data';
 import type {
   PlanActivity,
@@ -12,7 +13,8 @@ type ResolvedPlace = Omit<PlanActivity, 'time' | 'reason'>;
 
 export function resolvePlace(
   placeId: string,
-  attractions: Attraction[]
+  attractions: Attraction[],
+  services: Service[] = []
 ): ResolvedPlace | null {
   if (placeId === 'local-lunch') {
     return {
@@ -69,7 +71,7 @@ export async function buildItinerary({
   interests,
   days,
 }: TripPreferences): Promise<PlanDay[]> {
-  const attractions = await getAttractions();
+  const [attractions, services] = await Promise.all([getAttractions(), getServices()]);
 
   const categories = interests.flatMap(
     interest => interestCategories[interest]
@@ -124,7 +126,8 @@ export async function buildItinerary({
       activities: ids.flatMap((id, i) => {
         const place = resolvePlace(
           id,
-          attractions
+          attractions,
+          services
         );
 
         return place

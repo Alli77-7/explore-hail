@@ -1,5 +1,5 @@
 // صفحة مخطط الرحلات: الطلب ← كيف فهمه الـ AI ← الأيام + الجهات المقترحة
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PageHeader from '../../components/layout/PageHeader/PageHeader';
 import Toast from '../../components/ui/Toast/Toast';
 import { useLanguage } from '../../hooks/useLanguage';
@@ -9,7 +9,7 @@ import RecommendedPartners from './components/RecommendedPartners';
 import TripComposer from './components/TripComposer';
 import TripTimeline from './components/TripTimeline';
 import { fetchSmartPlan } from './planner.api';
-import type { SmartPlan, TripPreferences } from './planner.types';
+import type { PlanDay, SmartPlan, TripPreferences } from './planner.types';
 import { buildItinerary } from './planner.utils';
 import './tripPlanner.css';
 
@@ -20,6 +20,11 @@ export default function TripPlannerPage() {
   const [smartPlan, setSmartPlan] = useState<SmartPlan | null>(null);
   const [planVersion, setPlanVersion] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [fallbackPlan, setFallbackPlan] = useState<PlanDay[]>([]);
+
+  useEffect(() => {
+    buildItinerary(preferences).then(setFallbackPlan).catch(error => console.error(error));
+  }, [preferences]);
 
   const handleGenerate = async () => {
     setLoading(true);
@@ -51,7 +56,7 @@ export default function TripPlannerPage() {
       <div className="planner-results" aria-busy={loading}>
         <TripTimeline
           key={planVersion}
-          plan={smartPlan ? smartPlan.days : buildItinerary(preferences)}
+          plan={smartPlan ? smartPlan.days : fallbackPlan}
           note={smartPlan ? undefined : t('basePlanNote')}
         />
         <RecommendedPartners />

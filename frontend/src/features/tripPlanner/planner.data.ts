@@ -1,7 +1,6 @@
 // إعدادات مخطط الرحلات
 import type { TranslationKey } from '../../utils/translations';
 import type { AttractionCategory } from '../attractions/attractions.types';
-import { services } from '../booking/booking.data';
 import type { Interest, TripPace } from './planner.types';
 
 // خيارات الاهتمامات في النموذج
@@ -33,5 +32,4 @@ export const interestCategories: Record<Interest, AttractionCategory[]> = {
 };
 
 // الجهات المقترحة نأخذها من بيانات الحجز نفسها (بدون تكرار البيانات)
-const recommendedPartnerIds = ['millennium', 'flox', 'rumlah'];
-export const recommendedPartners = services.filter(service => recommendedPartnerIds.includes(service.id));
+export const recommendedPartnerIds = ['millennium', 'flox', 'rumlah'];

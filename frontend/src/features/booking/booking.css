@@ -30,6 +30,12 @@
   cursor: pointer;
 }
 
+/* لا نخفي بطاقة الخدمة أثناء اختيارها أو عند إعادة الرسم بعد تحميل البيانات */
+.service-card.reveal {
+  opacity: 1;
+  transform: none;
+}
+
 .service-card:hover,
 .service-card.selected {
   transform: translateY(-4px);
@@ -38,7 +44,13 @@
 }
 
 .service-card.selected {
+  opacity: 1;
   outline: 2px solid rgba(215, 166, 66, 0.35);
+}
+
+.service-card.reveal.selected {
+  opacity: 1;
+  transform: translateY(-4px);
 }
 
 .service-card img {

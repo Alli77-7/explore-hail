@@ -19,7 +19,7 @@ export default function ServiceCard({ service, isSelected, onSelect }: ServiceCa
   return (
     <Card
       hoverable={false}
-      className={classNames('service-card', isSelected && 'selected')}
+      className={classNames('service-card', isSelected && 'selected', isSelected && 'show')}
       onClick={() => onSelect(service)}
     >
       <img src={service.image} alt={name} loading="lazy" decoding="async" />
