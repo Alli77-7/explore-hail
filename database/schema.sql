@@ -62,7 +62,8 @@ CREATE TABLE bookings (
     tourist_id INT NOT NULL,
     provider_id INT NOT NULL,
     booking_date DATETIME NOT NULL,
-    status ENUM('pending', 'confirmed', 'cancelled', 'completed') NOT NULL DEFAULT 'pending',
+    -- جديد — يخزن قرار مقدم الخدمة عند رفض الحجز.
+    status ENUM('pending', 'confirmed', 'rejected', 'cancelled', 'completed') NOT NULL DEFAULT 'pending',
     total_price DECIMAL(10, 2) NOT NULL,
     phone VARCHAR(20),
     num_adults INT DEFAULT 1,
