@@ -110,6 +110,51 @@
   animation: navFadeDown 0.7s 0.12s var(--nav-ease) both;
 }
 
+.navbar-login-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 7px 12px;
+  border: 1px solid rgba(242, 199, 109, 0.32);
+  border-radius: 999px;
+  color: var(--color-gold-light);
+  background: rgba(215, 166, 66, 0.1);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.navbar-track-link {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.navbar-track-link:hover { color: var(--color-gold-light); }
+
+.navbar-login-btn:hover {
+  border-color: rgba(242, 199, 109, 0.65);
+  color: #fff;
+  background: rgba(215, 166, 66, 0.2);
+  transform: translateY(-1px);
+}
+
+.navbar-login-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
 .navbar .lang-switcher {
   border: 1px solid rgba(255, 255, 255, 0.07);
   background: rgba(255, 255, 255, 0.055);
@@ -686,6 +731,17 @@
     font-size: 13px;
   }
 
+  .navbar-login-btn {
+    min-height: 32px;
+    padding: 6px 8px;
+    font-size: 11px;
+  }
+
+  .navbar-login-btn svg {
+    width: 15px;
+    height: 15px;
+  }
+
   .mobile-navigation {
     padding: 15px;
   }
@@ -697,6 +753,16 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .navbar-login-btn span {
+    display: none;
+  }
+
+  .navbar-login-btn {
+    width: 32px;
+    justify-content: center;
+    padding: 6px;
   }
 
   .mobile-navigation section > div {

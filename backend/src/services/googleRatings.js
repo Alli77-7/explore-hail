@@ -125,15 +125,16 @@ function getRiyadhTime() {
 }
 
 function startGoogleRatingScheduler(connection) {
-    let lastRunDate = null;
+    let lastRunMonth = null;
 
     const checkSchedule = async () => {
         const now = getRiyadhTime();
-        const date = `${now.year}-${now.month}-${now.day}`;
+        const month = `${now.year}-${now.month}`;
+        const isFirstDayOfMonth = now.day === "01";
         const isScheduledWindow = now.hour === "03" && Number(now.minute) <= 5;
 
-        if (!isScheduledWindow || lastRunDate === date) return;
-        lastRunDate = date;
+        if (!isFirstDayOfMonth || !isScheduledWindow || lastRunMonth === month) return;
+        lastRunMonth = month;
 
         try {
             const result = await syncGoogleRatings(connection);
@@ -145,7 +146,7 @@ function startGoogleRatingScheduler(connection) {
 
     const timer = setInterval(checkSchedule, 60 * 1000);
     checkSchedule();
-    console.log("Google ratings scheduler enabled for 03:00 Asia/Riyadh");
+    console.log("Google ratings scheduler enabled monthly on day 1 at 03:00 Asia/Riyadh");
     return timer;
 }
 

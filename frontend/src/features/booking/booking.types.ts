@@ -28,6 +28,10 @@ export interface BookingRequest {
   email: string;
   phone: string;
   date: string;
+  checkIn?: string;
+  checkOut?: string;
+  roomType?: string;
+  roomPrice?: number;
   guests: string;
   notes: string;
 }

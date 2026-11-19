@@ -7,13 +7,19 @@ import { useScrollReveal } from '../../../hooks/useScrollReveal';
 import { classNames } from '../../../utils/helpers';
 import type { BookingRequest, Service } from '../booking.types';
 
-type FormFields = Omit<BookingRequest, 'serviceId'>;
+type FormFields = Omit<BookingRequest, 'serviceId' | 'checkIn' | 'checkOut' | 'roomType' | 'roomPrice'> & { checkIn: string; checkOut: string; roomType: string; roomPrice: number };
 
-const emptyForm: FormFields = { fullName: '', email: '', phone: '', date: '', guests: '1', notes: '' };
+const emptyForm: FormFields = { fullName: '', email: '', phone: '', date: '', checkIn: '', checkOut: '', guests: '1', notes: '', roomType: 'studio', roomPrice: 250 };
+
+const roomOptions = [
+  { value: 'studio', label: 'استديو', price: 250 },
+  { value: 'one-bedroom', label: 'غرفة وصالة', price: 350 },
+  { value: 'two-bedroom', label: 'غرفتين وصالة', price: 450 },
+];
 
 interface BookingFormProps {
   selectedService: Service | null;
-  onSubmit: (request: BookingRequest) => void;
+  onSubmit: (request: BookingRequest) => Promise<boolean>;
   onMissingService: () => void;
 }
 
@@ -21,20 +27,33 @@ export default function BookingForm({ selectedService, onSubmit, onMissingServic
   const { t, pick } = useLanguage();
   const ref = useScrollReveal<HTMLFormElement>();
   const [form, setForm] = useState<FormFields>(emptyForm);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // دالة واحدة تحدّث أي حقل حسب اسمه (name)
   const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    if (isSubmitting) return;
     if (!selectedService) {
       onMissingService();
       return;
     }
-    onSubmit({ serviceId: selectedService.id, ...form });
-    setForm(emptyForm);
+    setIsSubmitting(true);
+    try {
+      const submitted = await onSubmit({
+        serviceId: selectedService.id,
+        ...form,
+        date: selectedService.type === 'hotel' ? form.checkIn : form.date,
+        roomType: selectedService.type === 'hotel' ? form.roomType : undefined,
+        roomPrice: selectedService.type === 'hotel' ? form.roomPrice : undefined,
+      });
+      if (submitted) setForm(emptyForm);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -67,10 +86,26 @@ export default function BookingForm({ selectedService, onSubmit, onMissingServic
       </label>
 
       <div className="form-row">
-        <label className="field">
+        {selectedService?.type === 'hotel' ? <>
+          <label className="field">
+            <span>تسجيل الدخول</span>
+            <input className="input" type="date" name="checkIn" value={form.checkIn} onChange={handleChange} required />
+          </label>
+          <label className="field">
+            <span>تسجيل الخروج</span>
+            <input className="input" type="date" name="checkOut" value={form.checkOut} onChange={handleChange} min={form.checkIn || undefined} required />
+          </label>
+          <label className="field">
+            <span>نوع السكن</span>
+            <select className="input" name="roomType" value={form.roomType} onChange={event => { const option = roomOptions.find(item => item.value === event.target.value) ?? roomOptions[0]; setForm(current => ({ ...current, roomType: option.value, roomPrice: option.price })); }} required>
+              {roomOptions.map(option => <option key={option.value} value={option.value}>{option.label} — {option.price} ريال / ليلة</option>)}
+            </select>
+            <strong className="room-price">السعر: {form.roomPrice} ريال / ليلة</strong>
+          </label>
+        </> : selectedService?.type === 'restaurant' ? null : <label className="field">
           <span>{t('date')}</span>
           <input className="input" type="date" name="date" value={form.date} onChange={handleChange} required />
-        </label>
+        </label>}
 
         <label className="field">
           <span>{t('guests')}</span>
@@ -88,7 +123,9 @@ export default function BookingForm({ selectedService, onSubmit, onMissingServic
         <textarea className="input" name="notes" value={form.notes} onChange={handleChange} placeholder={t('notesPlaceholder')} />
       </label>
 
-      <Button type="submit" fullWidth>{t('sendBooking')}</Button>
+      <Button type="submit" fullWidth disabled={isSubmitting} aria-busy={isSubmitting}>
+        {isSubmitting ? 'جاري إرسال الطلب...' : t('sendBooking')}
+      </Button>
     </form>
   );
 }

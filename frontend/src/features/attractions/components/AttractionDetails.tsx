@@ -31,9 +31,7 @@ export default function AttractionDetails({
     attraction.description_ar ?? attraction.description ?? ''
   );
 
-  const imageUrl = attraction.image_url
-    ? `http://localhost:3000${attraction.image_url}`
-    : '';
+  const imageUrl = attraction.image_url ?? '';
 
   const addToTrip = () => {
     onClose();

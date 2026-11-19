@@ -1,0 +1,27 @@
+.hotel-page { min-height: 70vh; }
+.hotel-container { max-width: 1100px; margin: 0 auto; }
+.hotel-header { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start; margin-bottom: 30px; }
+.hotel-header h1, .hotel-list h2 { margin: 6px 0; }
+.hotel-header p { color: var(--color-text-soft, #667085); }
+.hotel-eyebrow { color: var(--color-primary, #1f6f5b); font-size: .82rem; font-weight: 700; }
+.hotel-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 24px; }
+.hotel-stats article, .hotel-list { border: 1px solid var(--color-border, #e5e7eb); border-radius: 22px; padding: 22px; background: var(--color-surface, #fff); box-shadow: 0 12px 30px rgba(15, 23, 42, .06); }
+.hotel-stats article { display: grid; gap: 8px; }
+.hotel-stats strong { font-size: 2rem; }
+.hotel-list-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 18px; }
+.hotel-bookings { display: grid; gap: 12px; }
+.hotel-booking { display: grid; grid-template-columns: 100px 1fr auto; gap: 18px; align-items: center; padding: 18px 0; border-top: 1px solid var(--color-border, #e5e7eb); }
+.hotel-booking-main { display: grid; gap: 6px; }
+.hotel-booking-main span { color: var(--color-text-soft, #667085); font-size: .9rem; }
+.hotel-filters { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+.hotel-arrivals { margin-top: 20px; }
+.hotel-arrival-log { display: grid; gap: 0; }
+.hotel-arrival-row { display: grid; grid-template-columns: 130px 1fr auto; gap: 14px; align-items: center; padding: 13px 0; border-top: 1px solid var(--color-border, #e5e7eb); }
+.hotel-arrival-row span { color: var(--color-text-soft, #667085); }
+.hotel-arrival-row em { color: var(--color-primary, #1f6f5b); font-style: normal; font-weight: 700; }
+.hotel-booking-action { display: grid; justify-items: end; gap: 8px; }
+.hotel-status { font-size: .82rem; font-weight: 700; color: #16704e; }
+.hotel-status.checked-in { color: #7c3aed; }
+.room-price { color: var(--color-primary, #1f6f5b); font-size: .9rem; }
+@media (max-width: 700px) { .hotel-stats { grid-template-columns: 1fr; } .hotel-header, .hotel-list-heading { flex-direction: column; align-items: stretch; } .hotel-booking { grid-template-columns: 1fr; } .hotel-booking-action { justify-items: start; } }
+@media (max-width: 700px) { .hotel-filters, .hotel-arrival-row { grid-template-columns: 1fr; } }
