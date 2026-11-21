@@ -75,6 +75,9 @@ export function buildItinerary({
 =======
 }: TripPreferences): Promise<PlanDay[]> {
   const [attractions, services] = await Promise.all([getAttractions(), getServices()]);
+<<<<<<< HEAD
+>>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
+=======
 >>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
 
   const categories = interests.flatMap(

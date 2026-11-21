@@ -9,6 +9,7 @@ const multer = require("multer");
 const db = require("./config/database");
 const { parsePreferences, generatePlan } = require("./planner/aiPlanner");
 <<<<<<< HEAD
+<<<<<<< HEAD
 const { attractions: catalog } = require("./planner/catalog");
 const seedAttractions = require("./data/attractions.json");
 const withSlug = places => places.map(place => ({
@@ -16,6 +17,8 @@ const withSlug = places => places.map(place => ({
     slug: catalog.find(entry => entry.name === place.name)?.id,
 }));
 =======
+=======
+>>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
 const { getCatalog } = require("./planner/catalog");
 const { startGoogleRatingScheduler, syncGoogleRatings } = require("./services/googleRatings");
 <<<<<<< HEAD
@@ -26,6 +29,9 @@ const { createToken, checkPassword, hashPassword, requireAuth, requireRole } = r
 // جديد — خدمة إرسال إشعار البريد بعد قبول أو رفض الحجز.
 const { sendBookingStatusEmail } = require("./email");
 >>>>>>> 3e052b06462f2a5bf22424b7287bdd966c3cf29d
+<<<<<<< HEAD
+>>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
+=======
 >>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
 
 const app = express();
@@ -557,6 +563,10 @@ const PORT = Number(process.env.PORT || 3000);
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    startGoogleRatingScheduler(db);
+>>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
 =======
     startGoogleRatingScheduler(db);
 >>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68

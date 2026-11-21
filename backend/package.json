@@ -3,8 +3,13 @@
   "private": true,
   "scripts": {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "dev": "node --watch src/server.js",
     "start": "node src/server.js"
+=======
+    "start": "node src/server.js",
+    "seed": "node scripts/seed-production.js"
+>>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
 =======
     "start": "node src/server.js",
     "seed": "node scripts/seed-production.js"
