@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type FocusEvent } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../../../hooks/useLanguage';
 import { classNames } from '../../../utils/helpers';
+import { getCurrentRole, isAuthenticated } from '../../../services/auth';
 import LanguageSwitcher from '../../ui/LanguageSwitcher/LanguageSwitcher';
 import ThemeToggle from '../../ui/ThemeToggle/ThemeToggle';
 import DesktopNavigation from './DesktopNavigation';
@@ -142,6 +143,34 @@ export default function Navbar() {
       />
 
       <div className="navbar-actions">
+        <Link to="/booking-status" className="navbar-track-link" onClick={closeNavigation}>
+          {lang === 'ar' ? 'تتبع الحجز' : 'Track booking'}
+        </Link>
+        <button
+          type="button"
+          className="navbar-login-btn"
+          onClick={() => {
+            const authenticated = isAuthenticated();
+            const role = getCurrentRole();
+            window.location.assign(
+              !authenticated
+                ? '/login'
+                : role === 'restaurant'
+                  ? '/restaurant-queue'
+                  : role === 'hotel'
+                    ? '/hotel-dashboard'
+                    : '/dashboard',
+            );
+          }}
+          aria-label={lang === 'ar' ? 'تسجيل الدخول' : 'Sign in'}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+            <path d="m10 17 5-5-5-5" />
+            <path d="M15 12H3" />
+          </svg>
+          <span>{lang === 'ar' ? 'تسجيل الدخول' : 'Sign in'}</span>
+        </button>
         <LanguageSwitcher />
         <ThemeToggle />
         <button

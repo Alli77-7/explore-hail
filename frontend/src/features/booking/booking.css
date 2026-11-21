@@ -21,6 +21,26 @@
   margin-top: 20px;
 }
 
+.service-filter-controls { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.rating-filter { display: inline-flex; align-items: center; gap: 8px; color: var(--color-text-soft); font-size: 13px; }
+.rating-filter select { min-height: 36px; padding: 7px 10px; border: 1px solid var(--color-line); border-radius: 10px; background: var(--color-card); }
+.service-rating { display: inline-flex; align-items: center; gap: 5px; }
+.service-rating small { color: var(--color-text-soft); font-size: 11px; }
+
+.booking-load-error {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  padding: 18px;
+  border: 1px solid rgba(190, 65, 55, 0.25);
+  border-radius: var(--radius-sm);
+  background: rgba(190, 65, 55, 0.07);
+}
+
+.booking-load-error .auth-error {
+  margin: 0;
+}
+
 .service-card {
   display: grid;
   grid-template-columns: 130px 1fr;
@@ -28,6 +48,12 @@
   align-items: center;
   padding: 16px;
   cursor: pointer;
+}
+
+/* لا نخفي بطاقة الخدمة أثناء اختيارها أو عند إعادة الرسم بعد تحميل البيانات */
+.service-card.reveal {
+  opacity: 1;
+  transform: none;
 }
 
 .service-card:hover,
@@ -38,7 +64,13 @@
 }
 
 .service-card.selected {
+  opacity: 1;
   outline: 2px solid rgba(215, 166, 66, 0.35);
+}
+
+.service-card.reveal.selected {
+  opacity: 1;
+  transform: translateY(-4px);
 }
 
 .service-card img {

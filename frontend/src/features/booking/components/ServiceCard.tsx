@@ -19,20 +19,19 @@ export default function ServiceCard({ service, isSelected, onSelect }: ServiceCa
   return (
     <Card
       hoverable={false}
-      className={classNames('service-card', isSelected && 'selected')}
+      className={classNames('service-card', isSelected && 'selected', isSelected && 'show')}
       onClick={() => onSelect(service)}
     >
       <img src={service.image} alt={name} loading="lazy" decoding="async" />
       <div>
         <div className="card-top">
           <h3>{name}</h3>
-          <Rating value={service.rating} />
+          <div className="service-rating"><Rating value={service.rating} />{service.googleRatingCount ? <small>({service.googleRatingCount})</small> : null}</div>
         </div>
         <p>{pick(service.typeLabel, service.typeLabelAr)}</p>
         <p>⌖ {pick(service.location, service.locationAr)}</p>
         <p dir="ltr" className="service-contact">☎ {service.contact}</p>
         <div className="service-card-footer">
-          <b>{pick(service.price, service.priceAr)}</b>
           <Button size="sm" variant={isSelected ? 'ghost' : 'primary'}>
             {isSelected ? `✓ ${t('selected')}` : `${t('selectService')} →`}
           </Button>

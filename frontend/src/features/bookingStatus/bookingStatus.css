@@ -1,0 +1,15 @@
+.booking-status-page { max-width: 900px; }
+.booking-status-card { max-width: 680px; margin: 12px auto 0; display: grid; gap: 24px; }
+.booking-status-form { display: grid; gap: 16px; }
+.booking-status-form .btn { justify-self: start; }
+.booking-status-result { padding-top: 22px; border-top: 1px solid var(--color-line); }
+.booking-status-result-head { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+.booking-status-result-head small { color: var(--color-text-soft); }
+.booking-status-result h2 { margin-top: 6px; }
+.booking-status-badge { padding: 8px 13px; border-radius: 999px; background: rgba(215, 166, 66, .14); color: var(--color-text); white-space: nowrap; }
+.booking-status-badge.confirmed, .booking-status-badge.completed { background: rgba(20, 132, 68, .12); color: #17634f; }
+.booking-status-badge.cancelled { background: rgba(190, 65, 55, .12); color: #a13b32; }
+.booking-status-details { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.booking-status-details span { display: grid; gap: 3px; padding: 12px 14px; border-radius: 12px; background: var(--color-sand); color: var(--color-text-soft); }
+.booking-status-details b { color: var(--color-text); }
+@media (max-width: 600px) { .booking-status-result-head { align-items: flex-start; flex-direction: column; } .booking-status-form .btn { width: 100%; } }

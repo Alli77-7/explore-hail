@@ -32,6 +32,8 @@ export default function TripTimeline({ plan, note }: TripTimelineProps) {
   const [selected, setSelected] = useState(0);
   const day = plan[Math.min(selected, plan.length - 1)];
 
+  if (!day) return null;
+
   return (
     <section id="trip-timeline" className="itinerary" aria-labelledby="itinerary-title">
       <h2 id="itinerary-title" className="visually-hidden">{t('yourJourney')}</h2>

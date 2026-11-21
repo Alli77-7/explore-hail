@@ -10,6 +10,9 @@ export interface Service {
   typeLabel: string;
   typeLabelAr: string;
   rating: number;
+  googleRatingCount?: number | null;
+  ratingUpdatedAt?: string | null;
+  googleMapsUrl?: string | null;
   price: string;
   priceAr: string;
   location: string;
@@ -25,6 +28,10 @@ export interface BookingRequest {
   email: string;
   phone: string;
   date: string;
+  checkIn?: string;
+  checkOut?: string;
+  roomType?: string;
+  roomPrice?: number;
   guests: string;
   notes: string;
 }

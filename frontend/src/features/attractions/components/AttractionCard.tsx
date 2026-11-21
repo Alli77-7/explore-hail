@@ -27,9 +27,13 @@ export default function AttractionCard({
     attraction.description_ar ?? attraction.description ?? ''
   );
 
+<<<<<<< HEAD
   const imageUrl = attraction.image_url
-    ? `http://localhost:3000${attraction.image_url}`
+    ? attraction.image_url
     : '';
+=======
+  const imageUrl = attraction.image_url ?? '';
+>>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
 
   return (
     <Card className="attraction-card">

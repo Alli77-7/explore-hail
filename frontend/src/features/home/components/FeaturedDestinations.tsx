@@ -49,7 +49,7 @@ export default function FeaturedDestinations() {
             <img
               src={
                 attraction.image_url
-                  ? `http://localhost:3000${attraction.image_url}`
+                  ? attraction.image_url
                   : ''
               }
               alt={pick(

@@ -1,6 +1,6 @@
-import { getAttractions } from '../../services/attractions';
 import type { Attraction } from '../attractions/attractions.types';
-import { services } from '../booking/booking.data';
+import { getServices } from '../../services/services';
+import type { Service } from '../booking/booking.types';
 import { interestCategories } from './planner.data';
 import type {
   PlanActivity,
@@ -12,7 +12,8 @@ type ResolvedPlace = Omit<PlanActivity, 'time' | 'reason'>;
 
 export function resolvePlace(
   placeId: string,
-  attractions: Attraction[]
+  attractions: Attraction[],
+  services: Service[] = []
 ): ResolvedPlace | null {
   if (placeId === 'local-lunch') {
     return {
@@ -31,7 +32,7 @@ export function resolvePlace(
   }
 
   const attraction = attractions.find(
-    place => String(place.id) === placeId
+    place => String(place.id) === placeId || place.slug === placeId
   );
 
   if (attraction) {
@@ -40,7 +41,7 @@ export function resolvePlace(
       title: attraction.name,
       titleAr: attraction.name_ar ?? attraction.name,
       image: attraction.image_url
-        ? `http://localhost:3000${attraction.image_url}`
+        ? attraction.image_url
         : undefined,
       mapsUrl: attraction.google_map_url ?? undefined,
     };
@@ -65,11 +66,16 @@ export function resolvePlace(
   return null;
 }
 
-export async function buildItinerary({
+export function buildItinerary({
   interests,
   days,
+<<<<<<< HEAD
+}: TripPreferences, attractions: Attraction[]): PlanDay[] {
+  if (attractions.length === 0) return [];
+=======
 }: TripPreferences): Promise<PlanDay[]> {
-  const attractions = await getAttractions();
+  const [attractions, services] = await Promise.all([getAttractions(), getServices()]);
+>>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
 
   const categories = interests.flatMap(
     interest => interestCategories[interest]
@@ -124,7 +130,8 @@ export async function buildItinerary({
       activities: ids.flatMap((id, i) => {
         const place = resolvePlace(
           id,
-          attractions
+          attractions,
+          services
         );
 
         return place

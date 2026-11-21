@@ -1,5 +1,10 @@
 // صفحة مخطط الرحلات: الطلب ← كيف فهمه الـ AI ← الأيام + الجهات المقترحة
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+<<<<<<< HEAD
+import { getAttractions } from '../../services/attractions';
+import type { Attraction } from '../attractions/attractions.types';
+=======
+>>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
 import PageHeader from '../../components/layout/PageHeader/PageHeader';
 import Toast from '../../components/ui/Toast/Toast';
 import { useLanguage } from '../../hooks/useLanguage';
@@ -9,7 +14,7 @@ import RecommendedPartners from './components/RecommendedPartners';
 import TripComposer from './components/TripComposer';
 import TripTimeline from './components/TripTimeline';
 import { fetchSmartPlan } from './planner.api';
-import type { SmartPlan, TripPreferences } from './planner.types';
+import type { PlanDay, SmartPlan, TripPreferences } from './planner.types';
 import { buildItinerary } from './planner.utils';
 import './tripPlanner.css';
 
@@ -20,6 +25,23 @@ export default function TripPlannerPage() {
   const [smartPlan, setSmartPlan] = useState<SmartPlan | null>(null);
   const [planVersion, setPlanVersion] = useState(0);
   const [loading, setLoading] = useState(false);
+<<<<<<< HEAD
+  const [attractions, setAttractions] = useState<Attraction[]>([]);
+
+  useEffect(() => {
+    let active = true;
+    getAttractions()
+      .then(data => { if (active) setAttractions(data); })
+      .catch(error => console.error('Failed to load planner attractions:', error));
+    return () => { active = false; };
+  }, []);
+=======
+  const [fallbackPlan, setFallbackPlan] = useState<PlanDay[]>([]);
+
+  useEffect(() => {
+    buildItinerary(preferences).then(setFallbackPlan).catch(error => console.error(error));
+  }, [preferences]);
+>>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
 
   const handleGenerate = async () => {
     setLoading(true);
@@ -51,7 +73,11 @@ export default function TripPlannerPage() {
       <div className="planner-results" aria-busy={loading}>
         <TripTimeline
           key={planVersion}
-          plan={smartPlan ? smartPlan.days : buildItinerary(preferences)}
+<<<<<<< HEAD
+          plan={smartPlan ? smartPlan.days : buildItinerary(preferences, attractions)}
+=======
+          plan={smartPlan ? smartPlan.days : fallbackPlan}
+>>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
           note={smartPlan ? undefined : t('basePlanNote')}
         />
         <RecommendedPartners />

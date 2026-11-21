@@ -6,6 +6,7 @@ export type AttractionCategory =
 
 export interface Attraction {
   id: number;
+  slug?: string;
 
   name: string;
   name_ar: string | null;

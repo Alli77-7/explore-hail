@@ -3,7 +3,7 @@
 // الأقفال اللي تمنع الموديل يطلع برا أماكننا:
 // 1) نرسل له قائمتنا بس  2) يرجع id مو أسماء  3) الـ id في الـ schema لازم يكون من القائمة (enum)
 // 4) نفحص الرد هنا قبل ما نرجعه  5) ما نفعّل البحث في النت ولا أي أدوات
-const { attractions, restaurants, cafes, hotels, interestCategories, allPlaceIds, hotelIds } = require("./catalog");
+const { getCatalog, interestCategories } = require("./catalog");
 
 const DEFAULT_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 const DEFAULT_MODEL = "openai/gpt-oss-20b";
@@ -29,7 +29,8 @@ function parsePreferences(body) {
 }
 
 // قالب الرد: الموديل ما يقدر يرجع إلا الشكل هذا
-const planSchema = {
+function buildPlanSchema({ allPlaceIds, hotelIds }) {
+ return {
     type: "object",
     properties: {
         understanding: {
@@ -94,11 +95,13 @@ const planSchema = {
     },
     required: ["understanding", "insights", "stay", "days"],
     additionalProperties: false,
-};
+ };
+}
 
-function buildMessages({ interests, days, request, lang }) {
-    const categories = interests.flatMap(interest => interestCategories[interest]);
-    const catalog = {
+function buildMessages({ interests, days, request, lang }, catalog) {
+    const { attractions, restaurants, cafes, hotels, interestCategories: catalogInterestCategories } = catalog;
+    const categories = interests.flatMap(interest => catalogInterestCategories[interest] || []);
+    const catalogPayload = {
         attractions: attractions.map(place => ({ ...place, matchesSelectedInterests: categories.includes(place.category) })),
         restaurants,
         cafes,
@@ -131,7 +134,7 @@ function buildMessages({ interests, days, request, lang }) {
     const user = JSON.stringify({
         formSelections: { days, interests },
         travelerRequest: request || null,
-        catalog,
+        catalog: catalogPayload,
     });
 
     return [
@@ -143,7 +146,8 @@ function buildMessages({ interests, days, request, lang }) {
 const cleanText = (value, max = 280) => String(value || "").trim().slice(0, max);
 
 // الفحص الأخير: أي شي غريب نرفض الخطة كلها والفرونت يرجع للخطة المحلية
-function validatePlan(raw) {
+function validatePlan(raw, catalog) {
+    const { allPlaceIds, hotelIds } = catalog;
     if (!Array.isArray(raw?.days) || raw.days.length < 1 || raw.days.length > MAX_DAYS) return null;
 
     const days = raw.days.map((day, index) => ({
@@ -180,11 +184,12 @@ function validatePlan(raw) {
     };
 }
 
-async function generatePlan(preferences) {
+async function generatePlan(preferences, connection) {
     const apiKey = process.env.AI_API_KEY;
     if (!apiKey) throw new Error("AI_API_KEY is not set");
 
     const model = process.env.AI_MODEL || DEFAULT_MODEL;
+    const catalog = await getCatalog(connection);
 
     const response = await fetch(process.env.AI_API_URL || DEFAULT_API_URL, {
         method: "POST",
@@ -194,14 +199,14 @@ async function generatePlan(preferences) {
         },
         body: JSON.stringify({
             model,
-            messages: buildMessages(preferences),
+            messages: buildMessages(preferences, catalog),
             temperature: 0.5,
             max_completion_tokens: 16000,
             // موديلات gpt-oss تفكر قبل الرد، نخفف التفكير عشان ما تخلص التوكنز قبل الـ JSON
             ...(model.includes("gpt-oss") && { reasoning_effort: "low" }),
             response_format: {
                 type: "json_schema",
-                json_schema: { name: "hail_trip_plan", schema: planSchema, strict: true },
+                json_schema: { name: "hail_trip_plan", schema: buildPlanSchema(catalog), strict: true },
             },
         }),
         signal: AbortSignal.timeout(90000),
@@ -214,7 +219,7 @@ async function generatePlan(preferences) {
 
     const data = await response.json();
     const content = data.choices?.[0]?.message?.content;
-    const plan = validatePlan(JSON.parse(content));
+    const plan = validatePlan(JSON.parse(content), catalog);
 
     if (!plan) throw new Error("AI returned an invalid plan");
     return plan;

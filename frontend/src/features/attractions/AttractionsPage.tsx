@@ -87,6 +87,14 @@ export default function AttractionsPage() {
     });
   };
 
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    const nextParams = new URLSearchParams(searchParams);
+    if (value.trim()) nextParams.set('q', value);
+    else nextParams.delete('q');
+    setSearchParams(nextParams, { replace: true });
+  };
+
   const query = search.trim().toLowerCase();
 
   const visibleAttractions = attractions
@@ -150,9 +158,7 @@ export default function AttractionsPage() {
           <input
             type="search"
             value={search}
-            onChange={event =>
-              setSearch(event.target.value)
-            }
+            onChange={event => handleSearchChange(event.target.value)}
             placeholder={t('searchPlaceholder')}
             aria-label={t('searchPlaceholder')}
           />
