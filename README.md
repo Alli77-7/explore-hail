@@ -28,15 +28,17 @@ On Windows PowerShell, use `npm.cmd` if execution policy blocks `npm.ps1`.
 The UI runs at http://localhost:5173 and the API at http://localhost:3000.
 `npm run build` checks TypeScript and builds the UI.
 
-Local development uses the 18 existing seed attractions without requiring MySQL.
+Local development uses the 18 existing seed attractions and 11 seed services without requiring MySQL.
 To use a database, copy `backend/.env.example` to `backend/.env`, set
 `DATABASE_MODE=mysql`, and configure the `DB_*` values. Import `database/schema.sql`
 then `database/update_seed_data.sql` into MySQL. Production defaults to MySQL.
 The preview snapshot can be refreshed with `node scripts/snapshot-attractions.cjs`.
+Refresh the service snapshot with `node scripts/snapshot-services.cjs`.
 
 Set `AI_API_KEY` in `backend/.env` to enable the remote smart planner.
-Without a key, the UI keeps its local itinerary. Booking and inscription translation
-are currently UI prototypes; bookings are not submitted and translation is simulated.
+Without a key, the UI keeps its local itinerary. Bookings and provider/admin sign-in
+require MySQL and the migrations in `database/`; demo mode only previews the catalog.
+Inscription translation is simulated.
 
 ## Project Structure
 

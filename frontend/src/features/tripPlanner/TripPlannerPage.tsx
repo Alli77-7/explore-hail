@@ -1,13 +1,5 @@
 // صفحة مخطط الرحلات: الطلب ← كيف فهمه الـ AI ← الأيام + الجهات المقترحة
 import { useEffect, useState } from 'react';
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { getAttractions } from '../../services/attractions';
-import type { Attraction } from '../attractions/attractions.types';
-=======
->>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
-=======
->>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
 import PageHeader from '../../components/layout/PageHeader/PageHeader';
 import Toast from '../../components/ui/Toast/Toast';
 import { useLanguage } from '../../hooks/useLanguage';
@@ -28,29 +20,15 @@ export default function TripPlannerPage() {
   const [smartPlan, setSmartPlan] = useState<SmartPlan | null>(null);
   const [planVersion, setPlanVersion] = useState(0);
   const [loading, setLoading] = useState(false);
-<<<<<<< HEAD
-<<<<<<< HEAD
-  const [attractions, setAttractions] = useState<Attraction[]>([]);
-
-  useEffect(() => {
-    let active = true;
-    getAttractions()
-      .then(data => { if (active) setAttractions(data); })
-      .catch(error => console.error('Failed to load planner attractions:', error));
-    return () => { active = false; };
-  }, []);
-=======
-=======
->>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
   const [fallbackPlan, setFallbackPlan] = useState<PlanDay[]>([]);
 
   useEffect(() => {
-    buildItinerary(preferences).then(setFallbackPlan).catch(error => console.error(error));
+    let active = true;
+    buildItinerary(preferences)
+      .then(plan => { if (active) setFallbackPlan(plan); })
+      .catch(error => console.error('Failed to build local itinerary:', error));
+    return () => { active = false; };
   }, [preferences]);
-<<<<<<< HEAD
->>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
-=======
->>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
 
   const handleGenerate = async () => {
     setLoading(true);
@@ -82,15 +60,7 @@ export default function TripPlannerPage() {
       <div className="planner-results" aria-busy={loading}>
         <TripTimeline
           key={planVersion}
-<<<<<<< HEAD
-<<<<<<< HEAD
-          plan={smartPlan ? smartPlan.days : buildItinerary(preferences, attractions)}
-=======
           plan={smartPlan ? smartPlan.days : fallbackPlan}
->>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
-=======
-          plan={smartPlan ? smartPlan.days : fallbackPlan}
->>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
           note={smartPlan ? undefined : t('basePlanNote')}
         />
         <RecommendedPartners />

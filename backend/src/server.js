@@ -6,33 +6,13 @@ const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const fs = require("fs");
 const multer = require("multer");
+const { randomUUID } = require('node:crypto');
 const db = require("./config/database");
 const { parsePreferences, generatePlan } = require("./planner/aiPlanner");
-<<<<<<< HEAD
-<<<<<<< HEAD
-const { attractions: catalog } = require("./planner/catalog");
 const seedAttractions = require("./data/attractions.json");
-const withSlug = places => places.map(place => ({
-    ...place,
-    slug: catalog.find(entry => entry.name === place.name)?.id,
-}));
-=======
-=======
->>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
 const { getCatalog } = require("./planner/catalog");
 const { startGoogleRatingScheduler, syncGoogleRatings } = require("./services/googleRatings");
-<<<<<<< HEAD
 const { issueToken, requireAuth, requireProvider, requireAdmin, verifyPassword } = require("./auth");
-=======
-// جديد — أدوات إنشاء الحسابات والتحقق من تسجيل الدخول وصلاحيات الأدوار.
-const { createToken, checkPassword, hashPassword, requireAuth, requireRole } = require("./auth");
-// جديد — خدمة إرسال إشعار البريد بعد قبول أو رفض الحجز.
-const { sendBookingStatusEmail } = require("./email");
->>>>>>> 3e052b06462f2a5bf22424b7287bdd966c3cf29d
-<<<<<<< HEAD
->>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
-=======
->>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
 
 const app = express();
 
@@ -70,7 +50,12 @@ function isBookingRateLimited(key) {
 app.use(cors());
 app.use(express.json());
 
-app.post("/api/auth/login", async (req, res) => {
+function requireDatabase(req, res, next) {
+    if (!db) return res.status(503).json({ error: 'This feature requires MySQL. Configure DATABASE_MODE=mysql in backend/.env.' });
+    next();
+}
+
+app.post("/api/auth/login", requireDatabase, async (req, res) => {
     const { username, password } = req.body || {};
     if (!username || !password) return res.status(400).json({ error: "Username and password are required" });
     try {
@@ -104,7 +89,7 @@ app.get("/", (req, res) => {
 
 // Get all attractions
 app.get("/api/attractions", (req, res) => {
-    if (!db) return res.json(withSlug(seedAttractions));
+    if (!db) return res.json(seedAttractions);
     db.query("SELECT * FROM attractions", (err, results) => {
         if (err) {
             console.error("Failed to fetch attractions:", err.message);
@@ -114,7 +99,7 @@ app.get("/api/attractions", (req, res) => {
             });
         }
 
-        res.json(withSlug(results));
+        res.json(results);
     });
 });
 
@@ -152,106 +137,20 @@ app.post("/api/booking/ratings/sync", async (req, res) => {
     }
 });
 
-<<<<<<< HEAD
 // Create a booking request and persist it in the database.
 app.post(["/api/bookings", "/api/booking"], async (req, res) => {
     const { serviceId, fullName, email, phone, date, checkIn, checkOut, roomType, roomPrice, guests, notes } = req.body || {};
-=======
-// جديد — يسجل سائحًا أو مقدم خدمة، ويعيد رمزًا لاستخدامه في المسارات المحمية.
-app.post("/api/auth/register", async (req, res) => {
-    const { fullName, email, password, userType = "tourist", businessName, category } = req.body || {};
-    const normalizedEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
-    if (typeof fullName !== "string" || fullName.trim().length < 2 || fullName.trim().length > 100 ||
-        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail) ||
-        typeof password !== "string" || password.length < 8 || password.length > 128 ||
-        !["tourist", "provider"].includes(userType)) {
-        return res.status(400).json({ error: "Invalid registration details" });
-    }
-    if (userType === "provider" && (typeof businessName !== "string" || !businessName.trim() || !category)) {
-        return res.status(400).json({ error: "Business name and category are required" });
-    }
-    const connection = db.promise();
-    let transactionStarted = false;
-    try {
-        await connection.beginTransaction();
-        transactionStarted = true;
-        const [result] = await connection.execute(
-            "INSERT INTO users (full_name, email, password, user_type) VALUES (?, ?, ?, ?)",
-            [fullName.trim(), normalizedEmail, hashPassword(password), userType]
-        );
-        if (userType === "provider") {
-            const slug = `${businessName.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 65)}-${result.insertId}`;
-            await connection.execute(
-                "INSERT INTO service_providers (user_id, slug, business_name, category) VALUES (?, ?, ?, ?)",
-                [result.insertId, slug, businessName.trim(), String(category).trim()]
-            );
-        }
-        await connection.commit();
-        const user = { id: result.insertId, full_name: fullName.trim(), email: normalizedEmail, user_type: userType };
-        res.status(201).json({ user, token: createToken(user) });
-    } catch (err) {
-        if (transactionStarted) await connection.rollback();
-        if (err.code === "ER_DUP_ENTRY") return res.status(409).json({ error: "Email is already registered" });
-        console.error("Registration failed:", err.message);
-        res.status(500).json({ error: "Registration failed" });
-    }
-});
-
-// جديد — يسجل دخول المستخدم بعد مطابقة كلمة المرور مع التجزئة المحفوظة.
-app.post("/api/auth/login", async (req, res) => {
-    const email = typeof req.body?.email === "string" ? req.body.email.trim().toLowerCase() : "";
-    const password = req.body?.password;
-    if (!email || typeof password !== "string") return res.status(400).json({ error: "Email and password are required" });
-    try {
-        const [users] = await db.promise().execute(
-            "SELECT id, full_name, email, password, user_type FROM users WHERE email = ? LIMIT 1",
-            [email]
-        );
-        const account = users[0];
-        if (!account || !checkPassword(password, account.password)) {
-            return res.status(401).json({ error: "Invalid email or password" });
-        }
-        const user = { id: account.id, full_name: account.full_name, email: account.email, user_type: account.user_type };
-        res.json({ user, token: createToken(user) });
-    } catch (err) {
-        console.error("Login failed:", err.message);
-        res.status(500).json({ error: "Login failed" });
-    }
-});
-
-// جديد — يعيد بيانات الحساب المرتبط برمز الدخول.
-app.get("/api/auth/me", requireAuth, async (req, res) => {
-    try {
-        const [users] = await db.promise().execute(
-            "SELECT id, full_name, email, user_type FROM users WHERE id = ? LIMIT 1",
-            [req.user.id]
-        );
-        if (!users[0]) return res.status(401).json({ error: "Account no longer exists" });
-        res.json({ user: users[0] });
-    } catch (err) {
-        console.error("Failed to fetch account:", err.message);
-        res.status(500).json({ error: "Failed to fetch account" });
-    }
-});
-
-// جديد — ينشئ طلب حجز مرتبطًا بالمستخدم الذي سجل الدخول؛ بيانات الاسم والبريد لا تؤخذ من العميل.
-app.post(["/api/bookings", "/api/booking"], requireAuth, requireRole("tourist"), async (req, res) => {
-    const { serviceId, phone, date, guests, notes } = req.body || {};
->>>>>>> 3e052b06462f2a5bf22424b7287bdd966c3cf29d
     const adults = guests === "4+" ? 4 : Number(guests);
     const validDate = typeof date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(date);
     const validStay = (!checkIn && !checkOut) || (typeof checkIn === "string" && typeof checkOut === "string" && /^\d{4}-\d{2}-\d{2}$/.test(checkIn) && /^\d{4}-\d{2}-\d{2}$/.test(checkOut) && checkOut > checkIn);
 
-<<<<<<< HEAD
     if (!serviceId || !fullName?.trim() || !email?.trim() || !phone?.trim() || !validStay || !Number.isInteger(adults) || adults < 1 || adults > 4) {
-=======
-    if (!serviceId || !phone?.trim() || !validDate || !Number.isInteger(adults) || adults < 1 || adults > 4) {
->>>>>>> 3e052b06462f2a5bf22424b7287bdd966c3cf29d
         return res.status(400).json({ error: "Invalid booking details" });
     }
     if (isBookingRateLimited(`${req.ip}:${normalizePhone(phone)}`)) {
         return res.status(429).json({ error: "Too many booking attempts. Please try again later." });
     }
+    if (!db) return res.status(503).json({ error: 'Bookings require MySQL. Configure DATABASE_MODE=mysql in backend/.env.' });
 
     try {
         const connection = db.promise();
@@ -288,17 +187,28 @@ app.post(["/api/bookings", "/api/booking"], requireAuth, requireRole("tourist"),
             queuePosition = Number(queueRows[0]?.next_position || 1);
         }
 
+        const normalizedEmail = email.trim().toLowerCase();
+        const [tourists] = await connection.execute(
+            'SELECT id, user_type FROM users WHERE email = ? LIMIT 1', [normalizedEmail],
+        );
+        if (tourists[0] && tourists[0].user_type !== 'tourist') {
+            return res.status(400).json({ error: 'Use a tourist email address for bookings' });
+        }
+        let touristId = tourists[0]?.id;
+        if (!touristId) {
+            const passwordHash = await bcrypt.hash(randomUUID(), 12);
+            const [tourist] = await connection.execute(
+                "INSERT INTO users (full_name, email, password, user_type) VALUES (?, ?, ?, 'tourist')",
+                [fullName.trim(), normalizedEmail, passwordHash],
+            );
+            touristId = tourist.insertId;
+        }
+
         const [bookingResult] = await connection.execute(
             `INSERT INTO bookings
-<<<<<<< HEAD
              (tourist_id, provider_id, booking_date, check_in_date, check_out_date, room_type, room_price, status, total_price, phone, num_adults, num_children, notes, queue_position)
              VALUES (?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, 0, ?, ?)` ,
             [touristId, providers[0].id, validDate ? `${date} 00:00:00` : null, checkIn || null, checkOut || null, roomType || null, Number(roomPrice) || 0, 0, phone.trim(), adults, String(notes || "").trim(), queuePosition]
-=======
-             (tourist_id, provider_id, booking_date, status, total_price, phone, num_adults, num_children, notes)
-             VALUES (?, ?, ?, 'pending', 0, ?, ?, 0, ?)`,
-            [req.user.id, providers[0].id, `${date} 00:00:00`, phone.trim(), adults, String(notes || "").trim()]
->>>>>>> 3e052b06462f2a5bf22424b7287bdd966c3cf29d
         );
 
         res.status(201).json({ bookingId: bookingResult.insertId, status: "pending", queuePosition });
@@ -308,8 +218,7 @@ app.post(["/api/bookings", "/api/booking"], requireAuth, requireRole("tourist"),
     }
 });
 
-<<<<<<< HEAD
-app.get('/api/bookings/lookup', async (req, res) => {
+app.get('/api/bookings/lookup', requireDatabase, async (req, res) => {
     const bookingId = Number(req.query.bookingId);
     const phone = normalizePhone(req.query.phone);
     if (!Number.isInteger(bookingId) || bookingId < 1 || phone.length < 9) {
@@ -334,7 +243,7 @@ app.get('/api/bookings/lookup', async (req, res) => {
     }
 });
 
-app.get('/api/admin/providers', requireAuth, requireAdmin, async (req, res) => {
+app.get('/api/admin/providers', requireAuth, requireAdmin, requireDatabase, async (req, res) => {
     try {
         const [rows] = await db.promise().execute(
             `SELECT sp.id, sp.slug, sp.business_name, sp.name_ar, sp.category, sp.type_label,
@@ -347,7 +256,7 @@ app.get('/api/admin/providers', requireAuth, requireAdmin, async (req, res) => {
     } catch (error) { console.error('Admin providers failed:', error.message); res.status(500).json({ error: 'Failed to load providers' }); }
 });
 
-app.post('/api/admin/providers', requireAuth, requireAdmin, async (req, res) => {
+app.post('/api/admin/providers', requireAuth, requireAdmin, requireDatabase, async (req, res) => {
     const { username, password, fullName, businessName, nameAr, category, typeLabel, typeLabelAr, contact, location, locationAr, price, priceAr } = req.body || {};
     if (!username?.trim() || !password || password.length < 8 || !fullName?.trim() || !businessName?.trim() || !['hotel', 'restaurant', 'cafe', 'tour', 'cars'].includes(category)) {
         return res.status(400).json({ error: 'Username, password (8+), names, and valid category are required' });
@@ -375,7 +284,7 @@ app.post('/api/admin/providers', requireAuth, requireAdmin, async (req, res) => 
     }
 });
 
-app.patch('/api/admin/providers/:id', requireAuth, requireAdmin, async (req, res) => {
+app.patch('/api/admin/providers/:id', requireAuth, requireAdmin, requireDatabase, async (req, res) => {
     const { businessName, nameAr, category, typeLabel, typeLabelAr, contact, location, locationAr, price, priceAr, password } = req.body || {};
     try {
         const [result] = await db.promise().execute(
@@ -391,7 +300,7 @@ app.patch('/api/admin/providers/:id', requireAuth, requireAdmin, async (req, res
     } catch (error) { res.status(500).json({ error: 'Failed to update provider' }); }
 });
 
-app.post('/api/admin/providers/:id/image', requireAuth, requireAdmin, (req, res) => {
+app.post('/api/admin/providers/:id/image', requireAuth, requireAdmin, requireDatabase, (req, res) => {
     serviceImageUpload.single('image')(req, res, async (uploadError) => {
         if (uploadError) {
             const message = uploadError.code === 'LIMIT_FILE_SIZE'
@@ -419,7 +328,7 @@ app.post('/api/admin/providers/:id/image', requireAuth, requireAdmin, (req, res)
     });
 });
 
-app.get("/api/provider/bookings", requireAuth, requireProvider, async (req, res) => {
+app.get("/api/provider/bookings", requireAuth, requireProvider, requireDatabase, async (req, res) => {
     try {
         const providerId = req.auth.role === 'admin' ? null : req.auth.providerId;
         const [rows] = await db.promise().execute(
@@ -436,7 +345,7 @@ app.get("/api/provider/bookings", requireAuth, requireProvider, async (req, res)
     } catch (error) { console.error('Provider bookings failed:', error.message); res.status(500).json({ error: 'Failed to load bookings' }); }
 });
 
-app.patch("/api/provider/bookings/:id", requireAuth, requireProvider, async (req, res) => {
+app.patch("/api/provider/bookings/:id", requireAuth, requireProvider, requireDatabase, async (req, res) => {
     const requestedStatus = String(req.body?.status || '');
     const status = { served: 'completed', 'checked-in': 'completed' }[requestedStatus] || requestedStatus;
     if (!['pending', 'confirmed', 'cancelled', 'completed'].includes(status)) return res.status(400).json({ error: 'Invalid status' });
@@ -450,85 +359,6 @@ app.patch("/api/provider/bookings/:id", requireAuth, requireProvider, async (req
         if (!result.affectedRows) return res.status(404).json({ error: 'Booking not found' });
         res.json({ status });
     } catch (error) { console.error('Booking status update failed:', error.message); res.status(500).json({ error: 'Failed to update booking' }); }
-=======
-// جديد — يعرض الحجوزات الخاصة بالسائح المسجل فقط.
-app.get("/api/bookings/my", requireAuth, requireRole("tourist"), async (req, res) => {
-    try {
-        const [bookings] = await db.promise().execute(
-            `SELECT b.id, b.booking_date, b.status, b.phone, b.num_adults, b.notes,
-                    p.slug AS service_id, p.business_name, p.category
-             FROM bookings b JOIN service_providers p ON p.id = b.provider_id
-             WHERE b.tourist_id = ? ORDER BY b.created_at DESC`,
-            [req.user.id]
-        );
-        res.json(bookings);
-    } catch (err) {
-        console.error("Failed to fetch user bookings:", err.message);
-        res.status(500).json({ error: "Failed to fetch bookings" });
-    }
-});
-
-// جديد — يعرض لمقدم الخدمة الطلبات الواردة إلى الجهة المرتبطة بحسابه فقط.
-app.get("/api/provider/bookings", requireAuth, requireRole("provider"), async (req, res) => {
-    try {
-        const [bookings] = await db.promise().execute(
-            `SELECT b.id, b.booking_date, b.status, b.phone, b.num_adults, b.notes,
-                    u.full_name AS customer_name, u.email AS customer_email, p.business_name
-             FROM bookings b JOIN users u ON u.id = b.tourist_id
-             JOIN service_providers p ON p.id = b.provider_id
-             WHERE p.user_id = ? ORDER BY b.created_at DESC`,
-            [req.user.id]
-        );
-        res.json(bookings);
-    } catch (err) {
-        console.error("Failed to fetch provider bookings:", err.message);
-        res.status(500).json({ error: "Failed to fetch bookings" });
-    }
-});
-
-// جديد — يقبل أو يرفض طلبًا معلقًا ويتأكد من ملكية الجهة قبل تغيير الحالة وإرسال البريد.
-app.patch("/api/provider/bookings/:id/status", requireAuth, requireRole("provider"), async (req, res) => {
-    const bookingId = Number(req.params.id);
-    const status = req.body?.status;
-    if (!Number.isInteger(bookingId) || bookingId < 1 || !["confirmed", "rejected"].includes(status)) {
-        return res.status(400).json({ error: "Status must be confirmed or rejected" });
-    }
-    try {
-        const connection = db.promise();
-        const [rows] = await connection.execute(
-            `SELECT b.id, b.status, b.booking_date, u.full_name AS customer_name,
-                    u.email AS customer_email, p.business_name
-             FROM bookings b JOIN users u ON u.id = b.tourist_id
-             JOIN service_providers p ON p.id = b.provider_id
-             WHERE b.id = ? AND p.user_id = ? LIMIT 1`,
-            [bookingId, req.user.id]
-        );
-        const booking = rows[0];
-        if (!booking) return res.status(404).json({ error: "Booking not found" });
-        if (booking.status !== "pending") return res.status(409).json({ error: "Booking is no longer pending" });
-        const [update] = await connection.execute(
-            "UPDATE bookings SET status = ? WHERE id = ? AND status = 'pending'",
-            [status, bookingId]
-        );
-        if (!update.affectedRows) return res.status(409).json({ error: "Booking was already updated" });
-        let emailSent = false;
-        try {
-            emailSent = await sendBookingStatusEmail({
-                to: booking.customer_email,
-                customerName: booking.customer_name,
-                businessName: booking.business_name,
-                status,
-                bookingDate: String(booking.booking_date).slice(0, 10),
-            });
-        } catch (emailError) {
-            console.error("Booking updated but email failed:", emailError.message);
-        }
-        res.json({ id: bookingId, status, emailSent });
-    } catch (err) {
-        console.error("Failed to update booking:", err.message);
-        res.status(500).json({ error: "Failed to update booking" });
-    }
->>>>>>> 3e052b06462f2a5bf22424b7287bdd966c3cf29d
 });
 
 // Smart trip plan (LLM)
@@ -562,12 +392,5 @@ const PORT = Number(process.env.PORT || 3000);
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-    startGoogleRatingScheduler(db);
->>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
-=======
-    startGoogleRatingScheduler(db);
->>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
+    if (db) startGoogleRatingScheduler(db);
 });

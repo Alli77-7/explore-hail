@@ -42,6 +42,9 @@ async function fetchGoogleRating(placeId, apiKey) {
 }
 
 async function syncGoogleRatings(connection) {
+    if (!connection) {
+        return { synced: 0, skipped: true, reason: 'MySQL is not configured' };
+    }
     const apiKey = process.env.GOOGLE_MAPS_API_KEY;
     if (!apiKey) {
         return { synced: 0, skipped: true, reason: "GOOGLE_MAPS_API_KEY is not configured" };

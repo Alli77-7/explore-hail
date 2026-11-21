@@ -1,4 +1,5 @@
 import type { Attraction } from '../attractions/attractions.types';
+import { getAttractions } from '../../services/attractions';
 import { getServices } from '../../services/services';
 import type { Service } from '../booking/booking.types';
 import { interestCategories } from './planner.data';
@@ -66,19 +67,12 @@ export function resolvePlace(
   return null;
 }
 
-export function buildItinerary({
+export async function buildItinerary({
   interests,
   days,
-<<<<<<< HEAD
-}: TripPreferences, attractions: Attraction[]): PlanDay[] {
-  if (attractions.length === 0) return [];
-=======
 }: TripPreferences): Promise<PlanDay[]> {
   const [attractions, services] = await Promise.all([getAttractions(), getServices()]);
-<<<<<<< HEAD
->>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
-=======
->>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
+  if (attractions.length === 0) return [];
 
   const categories = interests.flatMap(
     interest => interestCategories[interest]
@@ -110,7 +104,7 @@ export function buildItinerary({
     const ids: string[] = [
       String(places[(index * 2) % places.length].id),
 
-      lovesFood
+      lovesFood && restaurants.length > 0
         ? restaurants[index % restaurants.length].id
         : 'local-lunch',
 
@@ -118,7 +112,7 @@ export function buildItinerary({
         places[(index * 2 + 1) % places.length].id
       ),
 
-      cafes[index % cafes.length].id,
+      cafes.length > 0 ? cafes[index % cafes.length].id : 'free-time',
     ];
 
     const times = [

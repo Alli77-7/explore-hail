@@ -11,6 +11,20 @@ function query(connection, sql, params = []) {
 }
 
 async function getCatalog(connection) {
+    if (!connection) {
+        const attractions = require('../data/attractions.json').map(place => ({
+            ...place,
+            nameAr: place.name_ar,
+            descriptionAr: place.description_ar,
+            about: place.description,
+            mapsUrl: place.google_map_url,
+            image: place.image_url,
+        }));
+        const services = require('../data/services.json').map(service => ({
+            ...service, category: service.type, about: service.description,
+        }));
+        return buildCatalog(attractions, services);
+    }
     const [attractionRows, serviceRows] = await Promise.all([
         query(connection, `
             SELECT id, name, description, category, google_map_url AS mapsUrl, image_url AS image,
@@ -35,6 +49,10 @@ async function getCatalog(connection) {
     const attractions = attractionRows.map(place => ({ ...place, about: place.description }));
     const services = serviceRows.map(service => ({ ...service, about: service.description }));
 
+    return buildCatalog(attractions, services);
+}
+
+function buildCatalog(attractions, services) {
     return {
         attractions,
         restaurants: services.filter(service => service.category === "restaurant"),

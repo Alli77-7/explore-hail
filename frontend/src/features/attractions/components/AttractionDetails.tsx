@@ -31,17 +31,7 @@ export default function AttractionDetails({
     attraction.description_ar ?? attraction.description ?? ''
   );
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-  const imageUrl = attraction.image_url
-    ? attraction.image_url
-    : '';
-=======
   const imageUrl = attraction.image_url ?? '';
->>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
-=======
-  const imageUrl = attraction.image_url ?? '';
->>>>>>> 04addd5bc08fcfa8a4258aaa6cd9e803f2eebc68
 
   const addToTrip = () => {
     onClose();
